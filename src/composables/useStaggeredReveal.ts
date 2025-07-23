@@ -31,8 +31,8 @@ export function useStaggeredReveal(itemCount: number, staggerDelay: number = 100
         })
       },
       {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
+        threshold: 0,
+        rootMargin: '0px'
       }
     )
 

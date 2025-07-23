@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { useTypingReveal } from '../composables/useTypingReveal'
+import { useInteractiveBackground } from '../composables/useInteractiveBackground'
 import ImageModal from '../components/ImageModal.vue'
 import LinkIcon from '../components/LinkIcon.vue'
 import profilePicture from '../assets/picture.png'
@@ -12,10 +13,23 @@ const scrollTo = (elementId: string) => {
   }
 }
 
+// Interactive background
+const { canvas, canvasContainer } = useInteractiveBackground({
+  particleCount: 75,
+  maxParticleSize: 2.5,
+  minParticleSize: 0.8,
+  connectionDistance: 120,
+  mouseInfluence: 160,
+  animationSpeed: 0.25,
+  colors: ['var(--accent-primary)', 'var(--accent-secondary)', 'var(--accent-tertiary)'],
+  enableConnections: true,
+  enableMouseInteraction: true
+})
+
 // Scroll reveal for hero content
 const { element: heroContent, style: contentStyle } = useScrollReveal({
   delay: 200,
-  translateY: '60px',
+  translateY: '0px',
   duration: '0.5s',
   easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
 })
@@ -53,6 +67,11 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
 
 <template>
   <section id="hero" class="hero">
+    <!-- Interactive Background -->
+    <div class="interactive-background" ref="canvasContainer">
+      <canvas ref="canvas" class="background-canvas"></canvas>
+    </div>
+    
     <div class="hero-container" ref="heroContent" :style="contentStyle">
       
       <div class="hero-visual" ref="subtitleElement" :style="subtitleStyle" >
@@ -119,6 +138,23 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   justify-content: center;
   padding: 0px 2rem 2rem;
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.interactive-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.background-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .hero-container {
@@ -127,10 +163,14 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-content {
   text-align: left;
+  position: relative;
+  z-index: 2;
 }
 
 .hero-title {
@@ -139,6 +179,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   color: var(--text-primary);
   margin-bottom: 1rem;
   line-height: 1.1;
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
 
 .hero-title :deep(.thick) {
@@ -152,6 +193,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   color: var(--text-secondary);
   margin-bottom: 2rem;
   line-height: 1.6;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
 }
 
 .typing-cursor {
@@ -302,6 +344,8 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
 .hero-grid {
