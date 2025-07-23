@@ -1,0 +1,90 @@
+<template>
+  <div class="svg-examples">
+    <h2>Recolorable SVG Examples</h2>
+    
+    <!-- Example 1: Loading from file path -->
+    <div class="example">
+      <h3>GitHub Icon - Default Color</h3>
+      <RecolorableSvg 
+        src="/src/assets/github-142-svgrepo-com.svg"
+        :width="32"
+        :height="32"
+      />
+    </div>
+    
+    <!-- Example 2: Custom fill color -->
+    <div class="example">
+      <h3>GitHub Icon - Accent Primary</h3>
+      <RecolorableSvg 
+        src="/src/assets/github-142-svgrepo-com.svg"
+        :width="32"
+        :height="32"
+        fill-color="var(--accent-primary)"
+      />
+    </div>
+    
+    <!-- Example 3: Custom stroke -->
+    <div class="example">
+      <h3>GitHub Icon - Accent Secondary Stroke</h3>
+      <RecolorableSvg 
+        src="/src/assets/github-142-svgrepo-com.svg"
+        :width="32"
+        :height="32"
+        fill-color="none"
+        stroke-color="var(--accent-secondary)"
+        :stroke-width="2"
+      />
+    </div>
+    
+    <!-- Example 4: Dynamic colors with theme -->
+    <div class="example">
+      <h3>GitHub Icon - Theme Aware</h3>
+      <RecolorableSvg 
+        src="/src/assets/github-142-svgrepo-com.svg"
+        :width="32"
+        :height="32"
+        fill-color="var(--text-primary)"
+      />
+    </div>
+    
+    <!-- Example 5: Inline SVG content -->
+    <div class="example">
+      <h3>Inline SVG - Accent Tertiary</h3>
+      <RecolorableSvg 
+        :content="inlineSvg"
+        :width="40"
+        :height="40"
+        fill-color="var(--accent-tertiary)"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import RecolorableSvg from './RecolorableSvg.vue'
+
+// Example inline SVG
+const inlineSvg = `
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+</svg>
+`
+</script>
+
+<style scoped>
+.svg-examples {
+  padding: 2rem;
+}
+
+.example {
+  margin: 2rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+}
+
+.example h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary, #333);
+}
+</style>

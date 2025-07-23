@@ -1,0 +1,209 @@
+:root {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+.default-font {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.intel-one-mono {
+  font-family: "Intel One Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+/* Light Theme (Default) */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-accent: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-accent: #495057;
+  --border-color: #dee2e6;
+  --button-bg: #007bff;
+  --button-hover: #0056b3;
+  --button-text: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --accent-primary: #007bff;
+  --accent-secondary: #17a2b8;
+  --accent-tertiary: #458fbc;
+  --accent-primary-rgb: 0, 123, 255;
+  --accent-secondary-rgb: 23, 162, 184;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-accent: #3a3a3a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-accent: #d0d0d0;
+  --border-color: #4a4a4a;
+  --button-bg: #484f5b;
+  --button-hover: #0b5ed7;
+  --button-text: #ffffff;
+  --shadow: rgba(255, 255, 255, 0.1);
+  --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
+  --accent-tertiary: #ff6b6b;
+  --accent-primary-rgb: 99, 102, 241;
+  --accent-secondary-rgb: 139, 92, 246;
+}
+
+/* Pink Theme */
+[data-theme="pink"] {
+  --bg-primary: #fdf2f8;
+  --bg-secondary: #fce7f3;
+  --bg-accent: #fbcfe8;
+  --text-primary: #831843;
+  --text-secondary: #be185d;
+  --text-accent: #9d174d;
+  --border-color: #f9a8d4;
+  --button-bg: #ec4899;
+  --button-hover: #db2777;
+  --button-text: #ffffff;
+  --shadow: rgba(236, 72, 153, 0.2);
+  --accent-primary: #ec4899;
+  --accent-secondary: #f59e0b;
+  --accent-tertiary: #f97316;
+  --accent-primary-rgb: 236, 72, 153;
+  --accent-secondary-rgb: 245, 158, 11;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Remove mobile tap highlights globally */
+*, *::before, *::after {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input, select, textarea, a {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  font-family: inherit;
+}
+
+button:focus, input:focus, select:focus, textarea:focus, a:focus {
+  outline: none;
+}
+
+button:active, input:active, select:active, textarea:active, a:active {
+  outline: none;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+a {
+  font-weight: 500;
+  color: var(--button-bg);
+  text-decoration: inherit;
+  transition: color 0.3s ease;
+}
+  
+a:hover {
+  color: var(--button-hover);
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+.btn {
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-1px);
+}
+
+
+.card {
+  padding: 2em;
+  background-color: var(--bg-accent);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin: 1em 0;
+  transition: all 0.3s ease;
+}
+
+.read-the-docs {
+  color: var(--text-secondary);
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px var(--shadow);
+}
+.imagenodrdag {
+  -webkit-user-drag: none; /* Chrome, Safari */
+  user-select: none;     /* Prevents selection */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none;  /* Optional: disables all mouse interaction */
+}

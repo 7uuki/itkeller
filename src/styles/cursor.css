@@ -1,0 +1,121 @@
+/* Global Cursor Styles */
+
+/* Hide default cursor globally on non-touch devices only */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
+/* On touch devices, ensure default cursors are shown */
+@media (hover: none) or (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+  
+  /* Hide custom cursor on touch devices */
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+/* Prevent text selection and interactions for no-text-cursor elements */
+.no-text-cursor,
+.no-text-cursor *,
+.no-text-cursor h1,
+.no-text-cursor h2,
+.no-text-cursor h3,
+.no-text-cursor h4,
+.no-text-cursor h5,
+.no-text-cursor h6,
+.no-text-cursor p,
+.no-text-cursor span,
+.no-text-cursor div,
+.no-text-cursor li {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  pointer-events: none !important;
+}
+
+/* Re-enable pointer events for interactive elements within no-text-cursor */
+.no-text-cursor button,
+.no-text-cursor .btn,
+.no-text-cursor .button,
+.no-text-cursor a,
+.no-text-cursor [role="button"],
+.no-text-cursor .clickable,
+.no-text-cursor input,
+.no-text-cursor textarea,
+.no-text-cursor select,
+.no-text-cursor .academic-item,
+.no-text-cursor .skill-item,
+.no-text-cursor .stat-box {
+  pointer-events: auto !important;
+}
+
+/* Custom Cursor Element Styles */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+  transition: width 0.15s ease, height 0.15s ease, border-radius 0.15s ease, background-color 0.15s ease;
+  transform: translate(-50%, -50%);
+  will-change: transform, width, height;
+}
+
+/* Text cursor state - vertical line */
+.custom-cursor.text-cursor {
+  width: 2px;
+  height: 32px;
+  border-radius: 1px;
+  background-color: 0073ff;
+  mix-blend-mode: normal;
+}
+
+/* Pointer cursor state - bigger circle for clickable elements */
+.custom-cursor.pointer-cursor {
+  width: 32px;
+  height: 32px;
+  background-color: var(--accent-secondary);
+  mix-blend-mode: difference;
+}
+
+/* Clicked state - scale down effect */
+.custom-cursor.clicked {
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+/* Additional utility classes */
+.force-no-text-cursor,
+.force-no-text-cursor * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Ensure stats and similar elements don't trigger text cursor */
+.stat-box,
+.stat-box *,
+.skill-item,
+.skill-item *,
+.about-stats,
+.about-stats *,
+.skills-grid,
+.skills-grid * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
