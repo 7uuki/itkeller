@@ -11,6 +11,7 @@ import FooterSection from './views/FooterSection.vue'
 import { useTheme } from './composables/useTheme'
 import { useCustomCursor } from './composables/useCustomCursor'
 import TestSection from './views/TestSection.vue'
+import TestSection from './views/TestSection.vue'
 
 // Function to detect mobile/touch devices
 const isMobileDevice = (): boolean => {
@@ -40,6 +41,9 @@ onMounted(() => {
     `
     document.head.appendChild(style)
   }
+  
+  // Ensure scroll is at top on mount (handles cases where browser tries to restore position)
+  window.scrollTo(0, 0)
   
   // Ensure scroll is at top on mount (handles cases where browser tries to restore position)
   window.scrollTo(0, 0)
