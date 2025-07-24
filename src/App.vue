@@ -1,17 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import Navigation from './components/Navigation.vue'
-import HeroSection from './views/HeroSection.vue'
-import AboutSection from './views/AboutSection.vue'
-import AcademicSection from './views/AcademicSection.vue'
-import ServicesSection from './views/ServicesSection.vue'
-import PortfolioSection from './views/PortfolioSection.vue'
-import ContactSection from './views/ContactSection.vue'
 import FooterSection from './views/FooterSection.vue'
 import { useTheme } from './composables/useTheme'
 import { useCustomCursor } from './composables/useCustomCursor'
-import TestSection from './views/TestSection.vue'
-import TestSection from './views/TestSection.vue'
 
 // Function to detect mobile/touch devices
 const isMobileDevice = (): boolean => {
@@ -59,14 +51,7 @@ onMounted(() => {
     
     <Navigation />
     <main>
-      
-      <HeroSection />
-      <TestSection />
-      <AboutSection />
-      <AcademicSection />
-      <ServicesSection />
-      <PortfolioSection />
-      <ContactSection />
+      <router-view />
     </main>
     <FooterSection />
   </div>

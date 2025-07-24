@@ -15,7 +15,7 @@ const scrollTo = (elementId: string) => {
 
 // Interactive background
 const { canvas, canvasContainer } = useInteractiveBackground({
-  particleCount: 75,
+  particleCount: 150,
   maxParticleSize: 2.5,
   minParticleSize: 0.8,
   connectionDistance: 120,
@@ -36,7 +36,7 @@ const { element: heroContent, style: contentStyle } = useScrollReveal({
 
 // Typing effect for hero title
 const { element: titleElement, displayHtml: titleDisplayHtml, style: titleStyle } = useTypingReveal({
-  text: '<span class="thick">Hi!</span> My name is <br><span class="thick">Lukas Keller</span>',
+  text: '<span class="thick break-after-hi">Hi!</span> <span class="keep-together">My name is</span> <br><span class="thick">Lukas Keller</span>',
   typeSpeed: 45,
   showCursor: true,
   cursorChar: '|',
@@ -100,7 +100,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
           
           <LinkIcon 
             svg-src="/src/assets/mail-alt-svgrepo-com.svg"
-            href="mailto:your.email@example.com"
+            href="mailto:info@itkeller.com"
             title="Write me an Email"
             alt="Email"
             :size="25"
@@ -110,7 +110,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
           />
           <LinkIcon 
             svg-src="/src/assets/github-142-svgrepo-com.svg"
-            href="https://github.com/yourusername"
+            href="https://https://github.com/7uuki"
             title="This is my GitHub"
             alt="GitHub"
             :size="25"
@@ -118,7 +118,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
           />
           <LinkIcon 
             svg-src="/src/assets/linkedin-svgrepo-com.svg"
-            href="https://linkedin.com/in/yourprofile"
+            href="https://www.linkedin.com/in/lukas-keller-52867b258"
             title="Take a look at my LinkedIn"
             alt="LinkedIn"
             :size="25"
@@ -161,16 +161,19 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   max-width: 1200px;
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.5fr 2fr;
+  gap: 0rem;
   align-items: center;
   position: relative;
   z-index: 1;
+  pointer-events: none;
 }
 
 .hero-content {
   text-align: left;
   position: relative;
   z-index: 2;
+  pointer-events: auto;
 }
 
 .hero-title {
@@ -180,10 +183,26 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   margin-bottom: 1rem;
   line-height: 1.1;
   text-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
 }
 
 .hero-title :deep(.thick) {
   font-weight: 700;
+}
+
+.hero-title :deep(.keep-together) {
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .hero-title :deep(.break-after-hi)::after {
+    content: '\A';
+    white-space: pre;
+  }
+  
+  .hero-title :deep(.keep-together) {
+    white-space: normal;
+  }
 }
 
 
@@ -194,6 +213,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   margin-bottom: 2rem;
   line-height: 1.6;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
 }
 
 .typing-cursor {
@@ -211,6 +231,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  pointer-events: auto;
 }
 
 .btn {
@@ -275,7 +296,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
 
 .btn-primary:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
+  box-shadow: 0 8px 25px var(--shadow);
   color: white;
 }
 
@@ -338,6 +359,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   margin-top: 2rem;
   justify-content: flex-start;
   align-items: center;
+  pointer-events: auto;
 }
 
 .hero-visual {
@@ -346,6 +368,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   align-items: center;
   position: relative;
   z-index: 2;
+  pointer-events: auto;
 }
 
 .hero-grid {
@@ -400,6 +423,10 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
 
   .hero-content {
     text-align: center;
+  }
+
+  .hero-buttons {
+    justify-content: center;
   }
 
   .hero-grid {

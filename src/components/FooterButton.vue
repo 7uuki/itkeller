@@ -1,27 +1,18 @@
 <template>
-  <button 
+  <router-link 
+    :to="targetRoute"
     class="footer-link"
-    @click="handleClick"
   >
     <slot />
-  </button>
+  </router-link>
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
-
 interface Props {
-  targetSection: string
+  targetRoute: string
 }
 
-const props = defineProps<Props>()
-const emit = defineEmits<{
-  navigate: [targetSection: string]
-}>()
-
-const handleClick = () => {
-  emit('navigate', props.targetSection)
-}
+defineProps<Props>()
 </script>
 
 <style scoped>
@@ -29,14 +20,8 @@ const handleClick = () => {
   color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.3s ease;
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: inherit;
-  font-family: inherit;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
+  font-weight: 600;
+  display: inline-block;
 }
 
 .footer-link:hover {

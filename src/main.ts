@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import router from './router'
 import './styles/style.css'
 import './styles/cursor.css'
 import App from './App.vue'
@@ -8,8 +9,6 @@ if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual'
 }
 
-
-
 // Ensure page starts at top on load
 window.addEventListener('load', () => {
   setTimeout(() => {
@@ -17,4 +16,4 @@ window.addEventListener('load', () => {
   }, 0)
 })
 
-createApp(App).mount('#app')
+createApp(App).use(router).mount('#app')

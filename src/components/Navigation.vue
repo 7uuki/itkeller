@@ -1,11 +1,14 @@
 <template>
   <nav class="navbar" :class="{ 'navbar-scrolled': isScrolled }">
-    <div class="nav-container">
+    <div class="nav-container" :class="{ 'legal-page': $route.path !== '/' }">
       <div class="nav-brand">
-        <h2>ItKeller.com</h2>
+        <router-link to="/" class="brand-link">
+          <h2>ItKeller.com</h2>
+        </router-link>
       </div>
       
-      <ul class="nav-menu" :class="{ active: isMobileMenuOpen }">
+      <!-- Show navigation menu only on home page -->
+      <ul v-if="$route.path === '/'" class="nav-menu" :class="{ active: isMobileMenuOpen }">
         <li class="nav-item">
           <NavbarButton target-section="hero" @navigate="handleNavigation">Home</NavbarButton>
         </li>
@@ -29,11 +32,27 @@
         </li>
       </ul>
       
+      <!-- Show legal navigation on legal pages -->
+      <ul v-if="$route.path !== '/'" class="nav-menu legal-nav-menu">
+        <li class="nav-item">
+          <LegalSwitch />
+        </li>
+        <li class="nav-item">
+          <ArrowButton text="Go Back Home" @click="() => router.push('/')" />
+        </li>
+        <li class="nav-item desktop-only">
+          <ThemeToggle />
+        </li>
+      </ul>
+      
       <div class="nav-right">
-        <div class="mobile-theme-toggle">
+        <div v-if="$route.path === '/'" class="mobile-theme-toggle">
           <ThemeToggle />
         </div>
-        <div class="nav-toggle" @click="toggleMobileMenu">
+        <div v-if="$route.path !== '/'" class="mobile-theme-toggle">
+          <ThemeToggle />
+        </div>
+        <div v-if="$route.path === '/'" class="nav-toggle" @click="toggleMobileMenu">
           <span class="hamburger"></span>
           <span class="hamburger"></span>
           <span class="hamburger"></span>
@@ -47,7 +66,11 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import NavbarButton from './NavbarButton.vue'
 import ThemeToggle from './ThemeToggle.vue'
+import ArrowButton from './ArrowButton.vue'
+import LegalSwitch from './LegalSwitch.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
@@ -105,11 +128,31 @@ onUnmounted(() => {
   position: relative;
 }
 
+/* Keep normal layout for all pages since we now have navigation on legal pages too */
+.nav-container {
+  justify-content: space-between;
+}
+
+.nav-brand .brand-link {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.nav-brand .brand-link:hover {
+  color: var(--button-bg);
+}
+
 .nav-brand h2 {
   margin: 0;
   color: var(--text-primary);
   font-size: 1.5rem;
   font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.nav-brand .brand-link:hover h2 {
+  color: var(--button-bg);
 }
 
 .nav-menu {
@@ -118,6 +161,12 @@ onUnmounted(() => {
   margin: 0;
   padding: 0;
   gap: 2rem;
+}
+
+.legal-nav-menu {
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-item {
@@ -157,7 +206,11 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .nav-container {
-    position: relative;
+    padding: 0 1rem;
+  }
+  
+  .nav-brand h2 {
+    font-size: 1.3rem;
   }
 
   .nav-menu {
@@ -178,10 +231,22 @@ onUnmounted(() => {
   .nav-menu.active {
     right: 0;
   }
+  
+  .legal-nav-menu {
+    position: static;
+    background: transparent;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    height: auto;
+    width: auto;
+    gap: 1rem;
+  }
 
   .nav-right {
     position: absolute;
-    right: 2rem;
+    right: 1rem;
     top: 50%;
     transform: translateY(-50%);
     gap: 0.8rem;
