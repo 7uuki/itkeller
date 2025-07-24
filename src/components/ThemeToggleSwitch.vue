@@ -21,7 +21,7 @@ const {
   currentTheme,
   themeLabels,
   currentThemeIcon,
-  toggleTheme
+  toggleBetweenThemes
 } = useTheme()
 
 const isCycling = ref(false)
@@ -31,14 +31,14 @@ const handleThemeToggle = () => {
   
   // Use View Transition API if available, fallback to regular toggle
   if (!document.startViewTransition) {
-    toggleTheme()
+    toggleBetweenThemes(['cloudy', 'sunny'])
     // Reset animation state faster for fallback
     setTimeout(() => {
       isCycling.value = false
-    }, 20)
+    }, 5)
   } else {
     document.startViewTransition(() => {
-      toggleTheme()
+      toggleBetweenThemes(['cloudy', 'sunny'])
     }).finished.finally(() => {
       // Reset animation state when view transition completes
       isCycling.value = false
@@ -62,7 +62,7 @@ const handleThemeToggle = () => {
   cursor: pointer;
   font-family: inherit;
   font-size: 1rem;
-  padding: 0.4rem;
+  padding: 0rem;
   border-radius: 50%;
   transition: all 0.3s ease;
   width: 40px;

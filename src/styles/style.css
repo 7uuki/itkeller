@@ -79,6 +79,46 @@
   --accent-secondary-rgb: 245, 158, 11;
 }
 
+/* Cloudy Theme (Dark mode with blue/purple accents) */
+[data-theme="cloudy"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --bg-accent: #3a3a3a;
+  --text-primary: #e5e5e5;
+  --text-secondary: #a0a0a0;
+  --text-accent: #c0c0c0;
+  --border-color: #4a4a4a;
+  --button-bg: #6366f1;
+  --button-hover: #4f46e5;
+  --button-text: #ffffff;
+  --shadow: rgba(99, 102, 241, 0.2);
+  --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
+  --accent-tertiary: #ff6b6b;
+  --accent-primary-rgb: 99, 102, 241;
+  --accent-secondary-rgb: 139, 92, 246;
+}
+
+/* Sunny Theme (Light mode with warm accents) */
+[data-theme="sunny"] {
+  --bg-primary: #fefefe;
+  --bg-secondary: #f8f8f8;
+  --bg-accent: #f0f0f0;
+  --text-primary: #2d2d2d;
+  --text-secondary: #666666;
+  --text-accent: #444444;
+  --border-color: #e0e0e0;
+  --button-bg: #ec4899;
+  --button-hover: #db2777;
+  --button-text: #ffffff;
+  --shadow: rgba(236, 72, 153, 0.15);
+  --accent-primary: #ec4899;
+  --accent-secondary: #f59e0b;
+  --accent-tertiary: #f97316;
+  --accent-primary-rgb: 236, 72, 153;
+  --accent-secondary-rgb: 245, 158, 11;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
