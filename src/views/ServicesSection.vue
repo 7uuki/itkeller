@@ -2,14 +2,14 @@
   <section id="services" class="services">
     <div class="services-container">
       <div class="section-header" ref="headerElement" :style="headerStyle">
-        <h2>My Services</h2>
-        <p>What I can do for you</p>
+        <h2>{{ t.services.title }}</h2>
+        <p>{{ t.services.subtitle }}</p>
       </div>
       
       <div class="services-grid">
         <div 
           class="service-card" 
-          v-for="(service, index) in services" 
+          v-for="(service, index) in translatedServices" 
           :key="service.id"
           :ref="setServiceRef(index)"
           :style="getServiceStyle(index)"
@@ -20,7 +20,7 @@
           <ul class="service-features">
             <li v-for="feature in service.features" :key="feature">{{ feature }}</li>
           </ul>
-          <button class="service-btn">Learn More</button>
+          <button class="service-btn">{{ t.services.learnMore }}</button>
         </div>
       </div>
     </div>
@@ -28,53 +28,58 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { useStaggeredReveal } from '../composables/useStaggeredReveal'
+import { useLanguage } from '../composables/useLanguage'
 
-const services = [
+const { t } = useLanguage()
+
+// Translated services
+const translatedServices = computed(() => [
   {
     id: 1,
     icon: '🌐',
-    title: 'Web Development',
-    description: 'Custom websites and web applications built with modern technologies',
-    features: ['Responsive Design', 'Performance Optimization', 'SEO Friendly', 'Modern Frameworks']
+    title: t.value.services.webDev.title,
+    description: t.value.services.webDev.description,
+    features: t.value.services.webDev.features
   },
   {
     id: 2,
     icon: '📱',
-    title: 'Mobile Apps',
-    description: 'Cross-platform mobile applications for iOS and Android',
-    features: ['Native Performance', 'Offline Support', 'Push Notifications', 'App Store Ready']
+    title: t.value.services.mobileApp.title,
+    description: t.value.services.mobileApp.description,
+    features: t.value.services.mobileApp.features
   },
   {
     id: 3,
     icon: '🎨',
-    title: 'UI/UX Design',
-    description: 'Beautiful and intuitive user interfaces that enhance user experience',
-    features: ['User Research', 'Prototyping', 'Design Systems', 'Accessibility']
+    title: t.value.services.uiux.title,
+    description: t.value.services.uiux.description,
+    features: t.value.services.uiux.features
   },
   {
     id: 4,
     icon: '⚡',
-    title: 'Performance',
-    description: 'Optimize your existing applications for speed and efficiency',
-    features: ['Code Optimization', 'Database Tuning', 'Caching Strategies', 'Monitoring']
+    title: t.value.services.performance.title,
+    description: t.value.services.performance.description,
+    features: t.value.services.performance.features
   },
   {
     id: 5,
     icon: '🔧',
-    title: 'Maintenance',
-    description: 'Ongoing support and maintenance for your web applications',
-    features: ['Bug Fixes', 'Security Updates', 'Feature Updates', '24/7 Support']
+    title: t.value.services.maintenance.title,
+    description: t.value.services.maintenance.description,
+    features: t.value.services.maintenance.features
   },
   {
     id: 6,
     icon: '☁️',
-    title: 'Cloud Services',
-    description: 'Deploy and manage your applications in the cloud',
-    features: ['AWS/Azure', 'Auto Scaling', 'Load Balancing', 'Monitoring']
+    title: t.value.services.cloud.title,
+    description: t.value.services.cloud.description,
+    features: t.value.services.cloud.features
   }
-]
+])
 
 // Scroll reveal for section header
 const { element: headerElement, style: headerStyle } = useScrollReveal({

@@ -12,14 +12,14 @@
       class="legal-switch-button"
       :class="{ active: currentPage === '/impressum' }"
     >
-      Impressum
+      {{ t.nav.impressum }}
     </router-link>
     <router-link 
       to="/datenschutz" 
       class="legal-switch-button"
       :class="{ active: currentPage === '/datenschutz' }"
     >
-      Datenschutz
+      {{ t.nav.datenschutz }}
     </router-link>
   </div>
 </template>
@@ -27,8 +27,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useLanguage } from '../composables/useLanguage'
 
 const route = useRoute()
+const { t } = useLanguage()
 
 const currentPage = computed(() => route.path)
 </script>
@@ -43,6 +45,8 @@ const currentPage = computed(() => route.path)
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .switch-indicator {
@@ -63,16 +67,16 @@ const currentPage = computed(() => route.path)
 }
 
 .legal-switch-button {
-  padding: 0.6rem 1.2rem;
+  padding: 0.4rem 0.8rem;
   background-color: transparent;
   border: none;
   border-radius: 8px;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   display: inline-block;
-  min-width: 100px;
+  min-width: 85px;
   text-align: center;
   position: relative;
   z-index: 1;
@@ -81,6 +85,9 @@ const currentPage = computed(() => route.path)
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
   flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .legal-switch-button.active {
@@ -116,9 +123,9 @@ const currentPage = computed(() => route.path)
   }
 
   .legal-switch-button {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-    min-width: 85px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+    min-width: 75px;
     border-radius: 7px;
   }
 }

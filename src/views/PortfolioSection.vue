@@ -2,18 +2,18 @@
   <section id="portfolio" class="portfolio">
     <div class="portfolio-container">
       <div class="section-header" ref="headerElement" :style="headerStyle">
-        <h2>My Portfolio</h2>
-        <p>Some of my recent work</p>
+        <h2>{{ t.portfolio.title }}</h2>
+        <p>{{ t.portfolio.subtitle }}</p>
       </div>
       
       <div class="portfolio-filters">
         <button 
-          v-for="filter in filters" 
-          :key="filter"
-          :class="['filter-btn', { active: activeFilter === filter }]"
-          @click="setFilter(filter)"
+          v-for="filter in translatedFilters" 
+          :key="filter.key"
+          :class="['filter-btn', { active: activeFilter === filter.key }]"
+          @click="setFilter(filter.key)"
         >
-          {{ filter }}
+          {{ filter.label }}
         </button>
       </div>
       
@@ -34,8 +34,8 @@
                 <span v-for="tag in project.tags" :key="tag" class="tag">{{ tag }}</span>
               </div>
               <div class="portfolio-actions">
-                <button class="action-btn">View Project</button>
-                <button class="action-btn secondary">Source Code</button>
+                <button class="action-btn">{{ t.portfolio.viewProject }}</button>
+                <button class="action-btn secondary">{{ t.portfolio.sourceCode }}</button>
               </div>
             </div>
           </div>
@@ -49,10 +49,20 @@
 import { ref, computed } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { useStaggeredReveal } from '../composables/useStaggeredReveal'
+import { useLanguage } from '../composables/useLanguage'
+
+const { t } = useLanguage()
 
 const activeFilter = ref('All')
 
-const filters = ['All', 'Web Apps', 'Mobile Apps', 'UI/UX', 'Backend']
+// Translated filters
+const translatedFilters = computed(() => [
+  { key: 'All', label: t.value.portfolio.filters.all },
+  { key: 'Web Apps', label: t.value.portfolio.filters.webApps },
+  { key: 'Mobile Apps', label: t.value.portfolio.filters.mobileApps },
+  { key: 'UI/UX', label: t.value.portfolio.filters.uiux },
+  { key: 'Backend', label: t.value.portfolio.filters.backend }
+])
 
 const projects = [
   {

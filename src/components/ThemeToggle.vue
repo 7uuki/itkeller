@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import { useTheme } from '../composables/useTheme'
+import { useLanguage } from '../composables/useLanguage'
 
 const { 
   currentThemeIcon, 
   toggleTheme 
 } = useTheme()
+
+const { t } = useLanguage()
 </script>
 
 <template>
   <button 
     class="theme-toggle"
     @click="toggleTheme"
-    :title="'Toggle theme'"
+    :title="t.theme.toggle"
   >
     {{ currentThemeIcon }}
   </button>

@@ -1,31 +1,37 @@
 <template>
   <nav class="navbar" :class="{ 'navbar-scrolled': isScrolled }">
     <div class="nav-container" :class="{ 'legal-page': $route.path !== '/' }">
-      <div class="nav-brand">
-        <router-link to="/" class="brand-link">
-          <h2>ItKeller.com</h2>
-        </router-link>
+      <div class="nav-left">
+        <div class="language-toggle-container">
+          <LanguageToggle />
+        </div>
+        
+        <div class="nav-brand">
+          <router-link to="/" class="brand-link">
+            <h2>ItKeller.com</h2>
+          </router-link>
+        </div>
       </div>
       
       <!-- Show navigation menu only on home page -->
       <ul v-if="$route.path === '/'" class="nav-menu" :class="{ active: isMobileMenuOpen }">
         <li class="nav-item">
-          <NavbarButton target-section="hero" @navigate="handleNavigation">Home</NavbarButton>
+          <NavbarButton target-section="hero" @navigate="handleNavigation">{{ t.nav.home }}</NavbarButton>
         </li>
         <li class="nav-item">
-          <NavbarButton target-section="about" @navigate="handleNavigation">About</NavbarButton>
+          <NavbarButton target-section="about" @navigate="handleNavigation">{{ t.nav.about }}</NavbarButton>
         </li>
         <li class="nav-item">
-          <NavbarButton target-section="academic" @navigate="handleNavigation">Academic</NavbarButton>
+          <NavbarButton target-section="academic" @navigate="handleNavigation">{{ t.nav.academic }}</NavbarButton>
         </li>
         <li class="nav-item">
-          <NavbarButton target-section="services" @navigate="handleNavigation">Services</NavbarButton>
+          <NavbarButton target-section="services" @navigate="handleNavigation">{{ t.nav.services }}</NavbarButton>
         </li>
         <li class="nav-item">
-          <NavbarButton target-section="portfolio" @navigate="handleNavigation">Portfolio</NavbarButton>
+          <NavbarButton target-section="portfolio" @navigate="handleNavigation">{{ t.nav.portfolio }}</NavbarButton>
         </li>
         <li class="nav-item">
-          <NavbarButton target-section="contact" @navigate="handleNavigation">Contact</NavbarButton>
+          <NavbarButton target-section="contact" @navigate="handleNavigation">{{ t.nav.contact }}</NavbarButton>
         </li>
         <li class="nav-item desktop-only">
           <ThemeToggle />
@@ -38,7 +44,7 @@
           <LegalSwitch />
         </li>
         <li class="nav-item">
-          <ArrowButton text="Go Back Home" @click="() => router.push('/')" />
+          <ArrowButton :text="t.nav.goBackHome" @click="() => router.push('/')" />
         </li>
         <li class="nav-item desktop-only">
           <ThemeToggle />
@@ -66,11 +72,14 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import NavbarButton from './NavbarButton.vue'
 import ThemeToggle from './ThemeToggle.vue'
+import LanguageToggle from './LanguageToggle.vue'
 import ArrowButton from './ArrowButton.vue'
 import LegalSwitch from './LegalSwitch.vue'
 import { useRouter } from 'vue-router'
+import { useLanguage } from '../composables/useLanguage'
 
 const router = useRouter()
+const { t } = useLanguage()
 
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
@@ -118,7 +127,6 @@ onUnmounted(() => {
 }
 
 .nav-container {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
@@ -126,11 +134,25 @@ onUnmounted(() => {
   align-items: center;
   height: 70px;
   position: relative;
+  min-width: 0; /* Allow flex items to shrink */
 }
 
 /* Keep normal layout for all pages since we now have navigation on legal pages too */
 .nav-container {
   justify-content: space-between;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-shrink: 0; /* Prevent left side from shrinking */
+  min-width: 200px; /* Minimum width for left side */
+}
+
+.language-toggle-container {
+  display: flex;
+  align-items: center;
 }
 
 .nav-brand .brand-link {
@@ -149,6 +171,7 @@ onUnmounted(() => {
   font-size: 1.5rem;
   font-weight: 700;
   transition: color 0.3s ease;
+  white-space: nowrap; /* Prevent brand name from wrapping */
 }
 
 .nav-brand .brand-link:hover h2 {
@@ -161,6 +184,8 @@ onUnmounted(() => {
   margin: 0;
   padding: 0;
   gap: 2rem;
+  margin-left: 2rem; /* Minimum gap between brand and menu */
+  margin-right: 2rem; /* Minimum gap between menu and right side */
 }
 
 .legal-nav-menu {
@@ -179,6 +204,7 @@ onUnmounted(() => {
   gap: 1rem;
   position: relative;
   z-index: 1001;
+  flex-shrink: 0; /* Prevent right side from shrinking */
 }
 
 .mobile-theme-toggle {
@@ -204,9 +230,44 @@ onUnmounted(() => {
   display: block;
 }
 
-@media (max-width: 768px) {
+/* Medium screens - prevent text wrapping in navigation */
+@media (max-width: 1100px) and (min-width: 901px) {
+  .nav-menu {
+    gap: 1.5rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+  
+  .nav-item {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1000px) and (min-width: 901px) {
+  .nav-menu {
+    gap: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .nav-container {
+    padding: 0 1.5rem;
+  }
+  
+  .nav-left {
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 900px) {
   .nav-container {
     padding: 0 1rem;
+  }
+  
+  .nav-left {
+    gap: 1rem;
+    min-width: 160px;
   }
   
   .nav-brand h2 {
@@ -226,6 +287,8 @@ onUnmounted(() => {
     padding-top: 2rem;
     transition: right 0.3s ease;
     z-index: 999;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .nav-menu.active {
@@ -242,6 +305,8 @@ onUnmounted(() => {
     height: auto;
     width: auto;
     gap: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 
   .nav-right {

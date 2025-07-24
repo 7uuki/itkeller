@@ -7,9 +7,9 @@
         </div>
         
         <div class="footer-center">
-          <FooterButton target-route="/impressum">Impressum</FooterButton>
+          <FooterButton target-route="/impressum">{{ t.nav.impressum }}</FooterButton>
           <span class="separator">-</span>
-          <FooterButton target-route="/datenschutz">Datenschutz</FooterButton>
+          <FooterButton target-route="/datenschutz">{{ t.nav.datenschutz }}</FooterButton>
         </div>
         
         <div class="footer-right">
@@ -35,6 +35,9 @@
 
 <script setup lang="ts">
 import FooterButton from '../components/FooterButton.vue'
+import { useLanguage } from '../composables/useLanguage'
+
+const { t } = useLanguage()
 </script>
 
 <style scoped>

@@ -39,6 +39,9 @@ const handleClick = () => {
   font-size: inherit;
   font-family: inherit;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .nav-link:hover {

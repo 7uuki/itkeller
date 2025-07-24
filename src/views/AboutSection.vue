@@ -2,20 +2,20 @@
   <section id="about" class="about">
     <div class="about-container">
       <div class="section-header" ref="headerElement" :style="headerStyle">
-        <h2>About Me</h2>
-        <p>Getting to know who I am and what I do</p>
+        <h2>{{ t.about.title }}</h2>
+        <p>{{ t.about.subtitle }}</p>
       </div>
       
       <div class="about-content">
         <div class="about-text" ref="textElement" :style="textStyle">
           <h3>Hello, I'm a Web Developer</h3>
-          <p>With over 5 years of experience in creating digital solutions that make a difference. I specialize in modern web technologies and love bringing ideas to life through code.</p>
+          <p>{{ t.about.description }}</p>
           <p>My passion lies in creating user-friendly, responsive, and performant web applications that provide excellent user experiences.</p>
           
           <div class="skills-grid no-text-cursor">
             <div 
               class="skill-item" 
-              v-for="(skill, index) in skills" 
+              v-for="(skill, index) in translatedSkills" 
               :key="skill.name"
               :ref="setSkillRef(index)"
               :style="getSkillStyle(index)"
@@ -32,7 +32,7 @@
         <div class="about-stats no-text-cursor" ref="statsElement" :style="statsStyle">
           <div  
             class="stat-box" 
-            v-for="(stat, index) in stats" 
+            v-for="(stat, index) in translatedStats" 
             :key="stat.label"
             :ref="setStatRef(index)"
             :style="getStatStyle(index)"
@@ -47,38 +47,43 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { useStaggeredReveal } from '../composables/useStaggeredReveal'
+import { useLanguage } from '../composables/useLanguage'
 
-const skills = [
+const { t } = useLanguage()
+
+// Translated skills and stats
+const translatedSkills = computed(() => [
   {
-    name: 'Frontend Development',
+    name: t.value.about.skills.frontend.name,
     icon: '💻',
-    description: 'Vue.js, React, TypeScript'
+    description: t.value.about.skills.frontend.description
   },
   {
-    name: 'Backend Development',
+    name: t.value.about.skills.backend.name,
     icon: '⚙️',
-    description: 'Node.js, Python, APIs'
+    description: t.value.about.skills.backend.description
   },
   {
-    name: 'UI/UX Design',
+    name: t.value.about.skills.uiux.name,
     icon: '🎨',
-    description: 'Figma, Adobe XD'
+    description: t.value.about.skills.uiux.description
   },
   {
-    name: 'Database',
+    name: t.value.about.skills.database.name,
     icon: '💾',
-    description: 'PostgreSQL, MongoDB'
+    description: t.value.about.skills.database.description
   }
-]
+])
 
-const stats = [
-  { number: '50+', label: 'Projects Completed' },
-  { number: '5+', label: 'Years Experience' },
-  { number: '20+', label: 'Happy Clients' },
-  { number: '100%', label: 'Success Rate' }
-]
+const translatedStats = computed(() => [
+  { number: '50+', label: t.value.about.stats.projects },
+  { number: '5+', label: t.value.about.stats.experience },
+  { number: '20+', label: t.value.about.stats.clients },
+  { number: '100%', label: t.value.about.stats.success }
+])
 
 // Scroll reveal for section header
 const { element: headerElement, style: headerStyle } = useScrollReveal({

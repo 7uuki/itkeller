@@ -3,7 +3,7 @@
     <div class="loading-content">
       <div class="logo-container">
         <h1 class="loading-logo">ItKeller.com</h1>
-        <div class="loading-subtitle">Loading...</div>
+        <div class="loading-subtitle">{{ t.loading.text }}</div>
       </div>
       <div class="loading-spinner">
         <div class="spinner"></div>
@@ -14,6 +14,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useLanguage } from '../composables/useLanguage'
+
+const { t } = useLanguage()
 
 const fadeOut = ref(false)
 

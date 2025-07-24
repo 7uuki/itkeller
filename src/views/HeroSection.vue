@@ -2,9 +2,12 @@
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { useTypingReveal } from '../composables/useTypingReveal'
 import { useInteractiveBackground } from '../composables/useInteractiveBackground'
+import { useLanguage } from '../composables/useLanguage'
 import ImageModal from '../components/ImageModal.vue'
 import LinkIcon from '../components/LinkIcon.vue'
 import profilePicture from '../assets/picture.png'
+
+const { t } = useLanguage()
 
 const scrollTo = (elementId: string) => {
   const element = document.getElementById(elementId)
@@ -85,11 +88,11 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
       <div class="hero-content" >
         <h1 class="hero-title" ref="titleElement" :style="titleStyle" v-html="titleDisplayHtml"></h1>
         <div ref="subtitleElement" :style="subtitleStyle" >
-          <p class="hero-subtitle" >Creating amazing digital experiences with modern web technologies</p>
+          <p class="hero-subtitle" >{{ t.hero.description }}</p>
           <div class="hero-buttons">
             <button class="btn btn-primary" @click="">Download CV</button>
             <button class="btn btn-secondary btn-with-arrow" @click="scrollTo('contact')">
-              <span class="btn-text">Get In Touch</span>
+              <span class="btn-text">{{ t.hero.getInTouch }}</span>
               <div class="btn-arrow"></div>
             </button>
           </div>
@@ -101,7 +104,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
           <LinkIcon 
             svg-src="/src/assets/mail-alt-svgrepo-com.svg"
             href="mailto:info@itkeller.com"
-            title="Write me an Email"
+            :title="t.hero.emailTitle"
             alt="Email"
             :size="25"
             fill-color="none"
@@ -111,7 +114,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
           <LinkIcon 
             svg-src="/src/assets/github-142-svgrepo-com.svg"
             href="https://https://github.com/7uuki"
-            title="This is my GitHub"
+            :title="t.hero.githubTitle"
             alt="GitHub"
             :size="25"
             fill-color="var(--text-primary)"
@@ -119,7 +122,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
           <LinkIcon 
             svg-src="/src/assets/linkedin-svgrepo-com.svg"
             href="https://www.linkedin.com/in/lukas-keller-52867b258"
-            title="Take a look at my LinkedIn"
+            :title="t.hero.linkedinTitle"
             alt="LinkedIn"
             :size="25"
             fill-color="var(--text-primary)"

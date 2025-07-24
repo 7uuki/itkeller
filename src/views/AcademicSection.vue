@@ -2,8 +2,8 @@
   <section id="academic" class="academic">
     <div class="academic-container">
       <div class="section-header" ref="headerElement" :style="headerStyle">
-        <h2>My Academic Journey</h2>
-        <p>Exploring my educational background and achievements</p>
+        <h2>{{ t.academic.title }}</h2>
+        <p>{{ t.academic.subtitle }}</p>
       </div>
       
       <div class="academic-content">
@@ -44,7 +44,7 @@
                   <p>{{ item.description }}</p>
                 </div>
                 <div class="achievements" v-if="item.achievements">
-                  <h5>Key Courses:</h5>
+                  <h5>{{ t.academic.keyCourses }}:</h5>
                   <ul>
                     <li v-for="achievement in item.achievements" :key="achievement">{{ achievement }}</li>
                   </ul>
@@ -64,67 +64,53 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { useStaggeredReveal } from '../composables/useStaggeredReveal'
+import { useLanguage } from '../composables/useLanguage'
 import kreuzgasseIcon from '../assets/kreuzgasse.png'
 import fhIcon from '../assets/fhaachen.png'
 import matseIcon from '../assets/matse.png'
 
+const { t } = useLanguage()
+
 const expandedItems = ref<number[]>([])
 
-const academicItems = [
-    {
+const academicItems = computed(() => [
+  {
     id: 1,
-    institution: 'FH Aachen University',
+    institution: t.value.academic.institutions.fhAachen.name,
     dates: 'Sep 2023 - Sep 2026',
-    degree: 'Bachelor of Science',
-    field: 'Angewandte Mathematik und Informatik',
+    degree: t.value.academic.institutions.fhAachen.degree,
+    field: t.value.academic.institutions.fhAachen.field,
     icon: fhIcon,
-    description: 'Dual study program with integrated IHK degree as MATSE in 3 years. Combination of mathematics and computer science. Practice-oriented through close integration into the training company. Numerous electives and critical examination of topics such as data protection, AI and information security.',
-    achievements: [
-      'Analysis, Stochastics, Linear Algebra',
-      'Numerics, Algorithms & Data Structures',
-      'Java, C++, Cobol',
-    ],
-    conclusion: [
-      'Final grade: TBD'
-    ]
+    description: t.value.academic.institutions.fhAachen.description,
+    achievements: t.value.academic.institutions.fhAachen.achievements,
+    conclusion: t.value.academic.institutions.fhAachen.conclusion
   },
   {
     id: 2,
-    institution: 'Matse Ausbildung',
+    institution: t.value.academic.institutions.matse.name,
     dates: 'Sep 2023 - Sep 2026',
-    degree: 'IHK degree as MATSE (Mathematisch-technische/r Softwareentwicklerin und –entwickler)',
-    field: 'Vocational Training as a mathematical-technical software developer',
+    degree: t.value.academic.institutions.matse.degree,
+    field: t.value.academic.institutions.matse.field,
     icon: matseIcon,
-    description: 'In-service training at Barmenia-Gothaer Insurance, parallel and integrated into the study program at FH-Aachen',
-    achievements: [
-      'Android App Development Project',
-      'Software Project Management: Development+Presentation at trade fair'
-    ],
-    conclusion: []
+    description: t.value.academic.institutions.matse.description,
+    achievements: t.value.academic.institutions.matse.achievements,
+    conclusion: t.value.academic.institutions.matse.conclusion
   },
-  
   {
     id: 3,
-    institution: 'Gymnasium Kreuzgasse',
+    institution: t.value.academic.institutions.gymnasium.name,
     dates: 'Aug 2016 - Aug 2023',
-    degree: 'Abitur Nordrhein-Westfalen',
-    field: '',
+    degree: t.value.academic.institutions.gymnasium.degree,
+    field: t.value.academic.institutions.gymnasium.field,
     icon: kreuzgasseIcon,
-    description: 'at Gymnasium Kreuzgasse in a bilingual class with a focus on French',
-    achievements: [
-      'Mathematics',
-      'German',
-      'Computer Science',
-      'Social sciences'
-    ],
-    conclusion: [
-      'Final grade: 1.2'
-    ]
+    description: t.value.academic.institutions.gymnasium.description,
+    achievements: t.value.academic.institutions.gymnasium.achievements,
+    conclusion: t.value.academic.institutions.gymnasium.conclusion
   }
-]
+])
 
 const toggleItem = (index: number) => {
   const itemIndex = expandedItems.value.indexOf(index)
@@ -146,7 +132,7 @@ const { element: headerElement, style: headerStyle } = useScrollReveal({
 const { 
   getItemStyle, 
   setItemRef 
-} = useStaggeredReveal(academicItems.length, 150)
+} = useStaggeredReveal(academicItems.value.length, 150)
 </script>
 
 <style scoped>

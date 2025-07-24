@@ -7,7 +7,7 @@
         :style="titleReveal.style.value"
         class="contact-title"
       >
-        Contact me
+        {{ t.contact.title }}
       </h2>
       
       <p 
@@ -15,8 +15,7 @@
         :style="descriptionReveal.style.value" 
         class="contact-description"
       >
-        We offer tailored design solutions to meet your unique needs. Whether it's UX/UI design, branding, or 
-        website development, we're here to bring your ideas to life.
+        {{ t.contact.subtitle }}
       </p>
       
       <form 
@@ -31,7 +30,7 @@
               type="text" 
               id="fullName" 
               v-model="form.fullName"
-              placeholder="Full name"
+              :placeholder="t.contact.form.namePlaceholder"
               required
             />
           </div>
@@ -40,7 +39,7 @@
               type="email" 
               id="email" 
               v-model="form.email"
-              placeholder="Email address"
+              :placeholder="t.contact.form.emailPlaceholder"
               required
             />
           </div>
@@ -50,14 +49,14 @@
           <textarea 
             id="message" 
             v-model="form.message"
-            placeholder="Write a message"
+            :placeholder="t.contact.form.messagePlaceholder"
             rows="8"
             required
           ></textarea>
         </div>
         
         <button type="submit" class="book-call-btn" :disabled="isSubmitting">
-          {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+          {{ isSubmitting ? t.contact.form.sending : t.contact.form.send }}
         </button>
       </form>
 
@@ -75,7 +74,7 @@
           <div v-else class="loading-placeholder">
             <div class="spinner"></div>
           </div>
-          <h3 class="success-title">Email Sent Successfully!</h3>
+          <h3 class="success-title">{{ t.contact.form.success }}</h3>
           <p class="success-message">Thank you for your message! We'll get back to you soon.</p>
           <button class="close-btn" @click="closeSuccessAnimation">Close</button>
         </div>
@@ -87,7 +86,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
+import { useLanguage } from '../composables/useLanguage'
 import { Vue3Lottie } from 'vue3-lottie'
+
+const { t } = useLanguage()
 
 const form = ref({
   fullName: '',
