@@ -113,7 +113,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
           />
           <LinkIcon 
             svg-src="/src/assets/github-142-svgrepo-com.svg"
-            href="https://https://github.com/7uuki"
+            href="https://github.com/7uuki"
             :title="t.hero.githubTitle"
             alt="GitHub"
             :size="25"

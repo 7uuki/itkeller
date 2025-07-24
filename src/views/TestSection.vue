@@ -20,6 +20,7 @@
         This is a test section with 100vh height for layout testing and development purposes.
       </p>
       
+      
       <!-- Terminal Container with Toggle -->
       <div 
         :ref="terminalReveal.element"

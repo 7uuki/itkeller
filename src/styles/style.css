@@ -28,15 +28,15 @@
   --text-secondary: #6c757d;
   --text-accent: #495057;
   --border-color: #dee2e6;
-  --button-bg: #007bff;
-  --button-hover: #0056b3;
+  --button-bg: #C562AF;
+  --button-hover: #B33791;
   --button-text: #ffffff;
   --shadow: rgba(0, 0, 0, 0.1);
-  --accent-primary: #007bff;
-  --accent-secondary: #17a2b8;
-  --accent-tertiary: #458fbc;
-  --accent-primary-rgb: 0, 123, 255;
-  --accent-secondary-rgb: 23, 162, 184;
+  --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
+  --accent-tertiary: #ff6b6b;
+  --accent-primary-rgb: 91, 33, 182;
+  --accent-secondary-rgb: 219, 141, 208;
 }
 
 /* Dark Theme */
@@ -48,8 +48,8 @@
   --text-secondary: #b0b0b0;
   --text-accent: #d0d0d0;
   --border-color: #4a4a4a;
-  --button-bg: #484f5b;
-  --button-hover: #0b5ed7;
+  --button-bg: #725CAD;
+  --button-hover: #B33791;
   --button-text: #ffffff;
   --shadow: rgba(255, 255, 255, 0.1);
   --accent-primary: #6366f1;
@@ -206,4 +206,29 @@ h1 {
   -moz-user-select: none;
   -ms-user-select: none;
   pointer-events: none;  /* Optional: disables all mouse interaction */
+}
+
+/* View Transition API for smooth theme changes */
+::view-transition-group(root) {
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); /* --expo-out equivalent */
+}
+
+::view-transition-new(root) {
+  mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="blur"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="0" cy="0" r="18" fill="white" filter="url(%23blur)"/></svg>') top left / 0 no-repeat;
+  mask-origin: content-box;
+  animation: themeScale 1s;
+  transform-origin: top left;
+}
+
+::view-transition-old(root),
+[data-theme="dark"]::view-transition-old(root) {
+  animation: themeScale 1s;
+  transform-origin: top left;
+  z-index: -1;
+}
+
+@keyframes themeScale {
+  to {
+    mask-size: 350vmax;
+  }
 }

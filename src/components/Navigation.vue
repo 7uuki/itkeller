@@ -6,6 +6,10 @@
           <LanguageToggle />
         </div>
         
+        <div class="theme-toggle-container">
+          <ThemeToggleSwitch />
+        </div>
+        
         <div class="nav-brand">
           <router-link to="/" class="brand-link">
             <h2>ItKeller.com</h2>
@@ -33,9 +37,6 @@
         <li class="nav-item">
           <NavbarButton target-section="contact" @navigate="handleNavigation">{{ t.nav.contact }}</NavbarButton>
         </li>
-        <li class="nav-item desktop-only">
-          <ThemeToggle />
-        </li>
       </ul>
       
       <!-- Show legal navigation on legal pages -->
@@ -46,18 +47,9 @@
         <li class="nav-item">
           <ArrowButton :text="t.nav.goBackHome" @click="() => router.push('/')" />
         </li>
-        <li class="nav-item desktop-only">
-          <ThemeToggle />
-        </li>
       </ul>
       
       <div class="nav-right">
-        <div v-if="$route.path === '/'" class="mobile-theme-toggle">
-          <ThemeToggle />
-        </div>
-        <div v-if="$route.path !== '/'" class="mobile-theme-toggle">
-          <ThemeToggle />
-        </div>
         <div v-if="$route.path === '/'" class="nav-toggle" @click="toggleMobileMenu">
           <span class="hamburger"></span>
           <span class="hamburger"></span>
@@ -71,7 +63,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import NavbarButton from './NavbarButton.vue'
-import ThemeToggle from './ThemeToggle.vue'
+import ThemeToggleSwitch from './ThemeToggleSwitch.vue'
 import LanguageToggle from './LanguageToggle.vue'
 import ArrowButton from './ArrowButton.vue'
 import LegalSwitch from './LegalSwitch.vue'
@@ -151,6 +143,11 @@ onUnmounted(() => {
 }
 
 .language-toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle-container {
   display: flex;
   align-items: center;
 }
