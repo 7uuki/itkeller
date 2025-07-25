@@ -118,7 +118,7 @@ const { getItemStyle: getStatStyle, setItemRef: setStatRef } = useStaggeredRevea
 
 <style scoped>
 .about {
-  padding: 100px 2rem;
+  padding: 50px 2rem;
   background-color: var(--bg-secondary);
 }
 

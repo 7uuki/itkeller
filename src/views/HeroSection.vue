@@ -135,11 +135,12 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
 
 <style scoped>
 .hero {
-  min-height: 100vh;
+  height: 90vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0px 2rem 2rem;
+  padding: 0px 2rem 0rem;
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   position: relative;
   overflow: hidden;
@@ -155,9 +156,13 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
 }
 
 .background-canvas {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
   display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
 }
 
 .hero-container {
@@ -170,6 +175,8 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
   position: relative;
   z-index: 1;
   pointer-events: none;
+  flex: 1;
+  align-self: center;
 }
 
 .hero-content {
@@ -414,6 +421,10 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
 }
 
 @media (max-width: 768px) {
+  .hero {
+    height: 98vh;
+  }
+
   .hero-container {
     grid-template-columns: 1fr;
     gap: 2rem;

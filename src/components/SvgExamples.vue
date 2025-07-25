@@ -1,8 +1,7 @@
 <template>
   <div class="svg-examples">
     <h2>Recolorable SVG Examples</h2>
-    
-    <!-- Example 1: Loading from file path -->
+
     <div class="example">
       <h3>GitHub Icon - Default Color</h3>
       <RecolorableSvg 
@@ -12,7 +11,6 @@
       />
     </div>
     
-    <!-- Example 2: Custom fill color -->
     <div class="example">
       <h3>GitHub Icon - Accent Primary</h3>
       <RecolorableSvg 
@@ -23,7 +21,6 @@
       />
     </div>
     
-    <!-- Example 3: Custom stroke -->
     <div class="example">
       <h3>GitHub Icon - Accent Secondary Stroke</h3>
       <RecolorableSvg 
@@ -36,7 +33,6 @@
       />
     </div>
     
-    <!-- Example 4: Dynamic colors with theme -->
     <div class="example">
       <h3>GitHub Icon - Theme Aware</h3>
       <RecolorableSvg 
@@ -47,7 +43,7 @@
       />
     </div>
     
-    <!-- Example 5: Inline SVG content -->
+
     <div class="example">
       <h3>Inline SVG - Accent Tertiary</h3>
       <RecolorableSvg 
