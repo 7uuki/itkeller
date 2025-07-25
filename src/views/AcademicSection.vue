@@ -315,7 +315,6 @@ const {
 
 .expand-icon.rotated {
   transform: rotate(180deg);
-  color: var(--accent-primary);
 }
 
 .academic-details {

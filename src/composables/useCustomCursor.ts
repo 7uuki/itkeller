@@ -123,6 +123,21 @@ export function useCustomCursor() {
         // Check if it's a clickable element
         if (isClickableElement(target)) return false
         
+        // Check for terminal-specific text elements
+        if (
+          target.classList.contains('terminal-input') ||
+          target.classList.contains('output') ||
+          target.classList.contains('command-text') ||
+          target.classList.contains('prompt-line') ||
+          target.closest('.terminal-input') ||
+          target.closest('.output') ||
+          target.closest('.command-text') ||
+          target.closest('.terminal-history') ||
+          target.closest('.history-entry')
+        ) {
+          return true
+        }
+        
         // Check for elements that should never show text cursor
         if (
           target.classList.contains('stat-box') ||

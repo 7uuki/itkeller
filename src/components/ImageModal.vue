@@ -24,14 +24,7 @@
         @click="closeModal"
       >
         <div class="modal-content" @click.stop>
-          <!-- Close Button -->
-          <button 
-            class="close-btn"
-            @click="closeModal"
-            aria-label="Close image"
-          >
-            ✕
-          </button>
+
           
           <!-- Full Size Image -->
           <img 

@@ -8,7 +8,7 @@
     >
       DE
     </button>
-    <span class="language-separator">|</span>
+    <span class="language-separator no-text-cursor">|</span>
     <button 
       class="language-option"
       :class="{ active: currentLang === 'en' }"

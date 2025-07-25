@@ -30,8 +30,7 @@ export function useTerminal(config: TerminalConfig = {}) {
     cursorBlinkInterval = 530,
     maxHistorySize = 100,
     initialHistory = [
-      { command: 'echo "Welcome to the interactive terminal!"', output: 'Welcome to the interactive terminal!' },
-      { command: 'whoami', output: username }
+      { command: 'echo "Welcome to the interactive terminal!"', output: 'Welcome to the interactive terminal!' }
     ],
     customCommands = {}
   } = config
@@ -86,7 +85,7 @@ export function useTerminal(config: TerminalConfig = {}) {
     if (commands[cmd]) {
       output = commands[cmd](args)
     } else {
-      output = `bash: ${cmd}: command not found`
+      output = `bash: command not found (use 'help' to see available commands)`
     }
 
     // Add to history (except for clear command)
