@@ -44,64 +44,25 @@
         class="view-container"
       >
         <TerminalWindow
+          v-model:terminal="terminal"
           :is-modal="false"
-          :active-view="activeView"
-          :current-command="currentCommand"
-          :command-history="commandHistory"
-          :show-cursor="showCursor"
-          :is-input-focused="isInputFocused"
-          :username="username"
-          :hostname="hostname"
-          :current-path="currentPath"
-          :execute-command="executeCommand"
-          :navigate-history="navigateHistory"
-          :auto-complete="autoComplete"
           @close="closeTerminal"
           @minimize="minimizeTerminal"
           @maximize="maximizeTerminal"
-          @clear-terminal="clearTerminal"
-          @update:active-view="(view: 'terminal' | 'classic') => activeView = view"
-          @update:is-input-focused="(focused: boolean) => isInputFocused = focused"
-          @update:current-command="(command: string) => currentCommand = command"
         />
-      </div>
-      
+      </div>      
     </div>
     
-    <!-- Terminal Modal -->
-    <TerminalModal
-      :is-open="isModalOpen"
-      :active-view="activeView"
-      :current-command="currentCommand"
-      :command-history="commandHistory"
-      :show-cursor="showCursor"
-      :is-input-focused="isInputFocused"
-      :username="username"
-      :hostname="hostname"
-      :current-path="currentPath"
-      :execute-command="executeCommand"
-      :navigate-history="navigateHistory"
-      :auto-complete="autoComplete"
-      @close="closeModal"
-      @minimize="handleMinimizeFromModal"
-      @clear-terminal="clearTerminal"
-      @update:active-view="(view) => activeView = view"
-      @update:is-input-focused="(focused) => isInputFocused = focused"
-      @update:current-command="(command) => currentCommand = command"
-    />
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
+import { ref } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { useTerminal } from '../composables/useTerminal'
-import TerminalModal from '../components/TerminalModal.vue'
 import TerminalWindow from '../components/TerminalWindow.vue'
 
 // View state
-const activeView = ref<'terminal' | 'classic'>('terminal')
-const isInputFocused = ref(false)
 const isModalOpen = ref(false)
 const isTerminalVisible = ref(true)
 
@@ -125,20 +86,6 @@ const terminal = useTerminal({
     }
   }
 })
-
-// Destructure what we need from the terminal composable
-const {
-  currentCommand,
-  commandHistory,
-  showCursor,
-  terminalInput,
-  executeCommand,
-  navigateHistory,
-  autoComplete,
-  username,
-  hostname,
-  currentPath
-} = terminal
 
 // Scroll reveal animations
 const titleReveal = useScrollReveal({
@@ -179,33 +126,6 @@ const maximizeTerminal = () => {
   isModalOpen.value = true
 }
 
-const closeModal = () => {
-  isModalOpen.value = false
-}
-
-const handleMinimizeFromModal = () => {
-  isModalOpen.value = false
-  isTerminalVisible.value = true
-}
-
-const clearTerminal = () => {
-  // Clear the command history
-  commandHistory.value = []
-}
-
-const autoResizeTextarea = () => {
-  if (terminalInput.value) {
-    terminalInput.value.style.height = 'auto'
-    terminalInput.value.style.height = terminalInput.value.scrollHeight + 'px'
-  }
-}
-
-// Watch for changes in currentCommand to auto-resize textarea
-watch(currentCommand, () => {
-  nextTick(() => {
-    autoResizeTextarea()
-  })
-})
 </script>
 
 <style scoped>
@@ -320,3 +240,4 @@ watch(currentCommand, () => {
   }
 }
 </style>
++

@@ -14,7 +14,7 @@
         <!-- Action Buttons - Only show in terminal mode -->
         <div v-if="activeView === 'terminal'" class="action-buttons">
           <button 
-            @click="clearTerminal"
+            @click="terminal.clearHistory()"
             class="action-btn"
             title="Clear Terminal"
           >
@@ -33,7 +33,7 @@
         <div class="header-toggle">
           <div class="toggle-button">
             <button 
-              @click="$emit('update:activeView', 'terminal')"
+              @click="updateActiveView('terminal')"
               :class="{ active: activeView === 'terminal' }"
               class="toggle-option toggle-left"
             >
@@ -41,7 +41,7 @@
             </button>
             <div class="toggle-divider">|</div>
             <button 
-              @click="$emit('update:activeView', 'classic')"
+              @click="updateActiveView('classic')"
               :class="{ active: activeView === 'classic' }"
               class="toggle-option toggle-right"
             >
@@ -55,28 +55,29 @@
     <!-- Terminal Body -->
     <div v-if="activeView === 'terminal'" class="terminal-body" :class="{ 'modal-body': isModal }">
       <div class="terminal-history">
-        <div v-for="(entry, index) in commandHistory" :key="index" class="history-entry">
+        <div v-for="(entry, index) in terminalRef.commandHistory.value" :key="index" class="history-entry">
           <div class="prompt-line">
-            <span class="user">{{ username }}</span>@<span class="hostname">{{ hostname }}</span>:<span class="path">{{ currentPath }}</span>$ <span class="command-text">{{ entry.command }}</span>
+            <span class="user">{{ terminalRef.username }}</span>@<span class="hostname">{{ terminalRef.hostname }}</span>:<span class="path">{{ terminalRef.currentPath }}</span>$ <span class="command-text">{{ entry.command }}</span>
           </div>
           <div v-if="entry.output" class="output">{{ entry.output }}</div>
         </div>
       </div>
       <div class="terminal-input-line" @click="focusInput">
         <span class="prompt">
-          <span class="user">{{ username }}</span>@<span class="hostname">{{ hostname }}</span>:<span class="path">{{ currentPath }}</span>$ 
+          <span class="user">{{ terminalRef.username }}</span>@<span class="hostname">{{ terminalRef.hostname }}</span>:<span class="path">{{ terminalRef.currentPath }}</span>$ 
         </span>
         <div class="input-container">
           <textarea 
             ref="terminalInput"
-            :value="currentCommand"
-            @input="$emit('update:currentCommand', ($event.target as HTMLTextAreaElement).value); autoResizeTextarea()"
-            @keydown.enter.prevent="executeCommand"
-            @keydown.up="navigateHistory(-1)"
-            @keydown.down="navigateHistory(1)"
-            @keydown.tab.prevent="autoComplete"
-            @focus="$emit('update:isInputFocused', true); autoResizeTextarea()"
-            @blur="$emit('update:isInputFocused', false)"
+            :value="terminalRef.currentCommand.value"
+            @input="updateCurrentCommand(($event.target as HTMLTextAreaElement).value); autoResizeTextarea()"
+            @keydown.enter.prevent="executeCommand()"
+            @keydown.down="terminalRef.navigateHistory(-1)"
+            @keydown.up="terminalRef.navigateHistory(1)"
+            @keydown.tab.prevent="terminalRef.autoComplete()"
+
+            @focus="updateIsInputFocused(true); autoResizeTextarea()"
+            @blur="updateIsInputFocused(false)"
             class="terminal-input"
             placeholder="Type a command..."
             spellcheck="false"
@@ -107,34 +108,34 @@
 import { ref, watch, nextTick } from 'vue'
 import BroomIcon from '../assets/broom.svg'
 import QuestionMarkIcon from '../assets/questionmark.svg'
+import { UseTerminal } from '@/composables/useTerminal'
+const terminalRef = defineModel<UseTerminal>('terminal', { required: true })
 
-interface Props {
-  activeView: 'terminal' | 'classic'
-  currentCommand: string
-  commandHistory: any[]
-  showCursor: boolean
-  isInputFocused: boolean
-  username: string
-  hostname: string
-  currentPath: string
-  executeCommand: () => void
-  navigateHistory: (direction: number) => void
-  autoComplete: () => void
-  isModal?: boolean
-}
 
-const props = defineProps<Props>()
+defineProps<{ isModal?: boolean }>()
 
-const emit = defineEmits<{
+const activeView = ref<'terminal' | 'classic'>('terminal')  
+const isInputFocused = ref(false)
+
+defineEmits<{
   close: []
   minimize: []
   maximize: []
-  'update:activeView': [view: 'terminal' | 'classic']
-  'update:isInputFocused': [focused: boolean]
-  'update:currentCommand': [command: string]
-  'clear-terminal': []
 }>()
 
+const updateIsInputFocused = (focused: boolean) => {
+  isInputFocused.value = focused
+}
+const updateCurrentCommand = (command: string) => {
+  terminalRef.value.currentCommand.value = command
+}
+const updateActiveView = (view: 'terminal' | 'classic') => {
+  activeView.value = view
+}
+
+const executeCommand = () => {
+  terminalRef.value.executeCommand()
+}
 const terminalInput = ref<HTMLTextAreaElement>()
 
 // Auto-resize textarea function
@@ -152,23 +153,20 @@ const focusInput = () => {
   }
 }
 
-// Clear terminal function
-const clearTerminal = () => {
-  emit('clear-terminal')
-}
-
 // Show help function
 const showHelp = () => {
-  emit('update:currentCommand', 'help')
-  props.executeCommand()
+  updateCurrentCommand('help')
+  terminalRef.value.executeCommand()
 }
 
+
 // Watch for changes in currentCommand to auto-resize textarea
-watch(() => props.currentCommand, () => {
+watch(() => terminalRef.value.currentCommand, () => {
   nextTick(() => {
     autoResizeTextarea()
   })
 })
+
 </script>
 
 <style scoped>
@@ -357,6 +355,7 @@ watch(() => props.currentCommand, () => {
 }
 
 .terminal-body {
+  
   background: #1e1e1e;
   color: #ffffff;
   padding: 16px;
@@ -377,6 +376,7 @@ watch(() => props.currentCommand, () => {
 
 .terminal-history {
   margin-bottom: 16px;
+  text-align: left;
 }
 
 .history-entry {

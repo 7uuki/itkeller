@@ -1,0 +1,26 @@
+> contact
+👋 Hi there! Let's get in touch.
+
+What's your name?
+> Max Mustermann
+
+Cool. What's your email address?
+> max@domain
+
+Oops, that doesn’t look like a valid email. Try again:
+> max@example.com
+
+What would you like to say?
+> Just wanted to say I love your site!
+
+You're about to send:
+---
+Name: Max Mustermann
+Email: max@example.com
+Message: Just wanted to say I love your site!
+---
+
+Send it? (yes/no)
+> yes
+📬 Sending...
+✅ Message sent! Thanks, Max!

@@ -19,8 +19,27 @@ export interface TerminalConfig {
   initialHistory?: TerminalHistoryEntry[]
   customCommands?: TerminalCommand
 }
+export interface UseTerminal {
+  username: string
+  hostname: string
+  currentPath: string
+  currentCommand: any
+  commandHistory: any
+  historyIndex: any
+  showCursor: any
+  terminalInput: any
+  formattedPrompt: any
+  executeCommand: () => void
+  navigateHistory: (direction: number) => void
+  autoComplete: () => void
+  focusInput: () => void
+  addCustomCommand: (name: string, handler: (args: string[]) => string) => void
+  removeCommand: (name: string) => void
+  addToHistory: (entry: TerminalHistoryEntry) => void
+  clearHistory: () => void
+}
 
-export function useTerminal(config: TerminalConfig = {}) {
+export function useTerminal(config: TerminalConfig = {}): UseTerminal {
   // Configuration with defaults
   const {
     username = 'user',
@@ -30,7 +49,7 @@ export function useTerminal(config: TerminalConfig = {}) {
     cursorBlinkInterval = 530,
     maxHistorySize = 100,
     initialHistory = [
-      { command: 'echo "Welcome to the interactive terminal!"', output: 'Welcome to the interactive terminal!' }
+      { command: 'echo "Welcome to the interactive terminal!"', output: 'Welcome to the interactive terminal!' },
     ],
     customCommands = {}
   } = config
@@ -57,8 +76,7 @@ export function useTerminal(config: TerminalConfig = {}) {
       return ''
     },
     date: () => new Date().toString(),
-    whoami: () => username,
-    hostname: () => hostname,
+    whoami: () => 'I would like to know :)',
     ls: () => 'Documents  Downloads  Pictures  Videos  Projects',
     pwd: () => currentPath === '~' ? `/home/${username}` : currentPath,
     history: () => commandHistory.value.map((entry, i) => `${i + 1}  ${entry.command}`).join('\n'),
@@ -67,8 +85,7 @@ export function useTerminal(config: TerminalConfig = {}) {
       const uptime = Math.floor(Math.random() * 1000000)
       return `up ${Math.floor(uptime / 3600)} hours, ${Math.floor((uptime % 3600) / 60)} minutes`
     },
-    env: () => `HOME=/home/${username}\nUSER=${username}\nSHELL=/bin/bash\nPATH=/usr/local/bin:/usr/bin:/bin`,
-    ps: () => 'PID TTY          TIME CMD\n 1234 pts/0    00:00:01 bash\n 5678 pts/0    00:00:00 ps'
+
   }
 
   // Combine default and custom commands
@@ -76,6 +93,7 @@ export function useTerminal(config: TerminalConfig = {}) {
 
   // Terminal functions
   const executeCommand = () => {
+    console.log('Executing command:', currentCommand.value)
     const command = currentCommand.value.trim()
     if (!command) return
 
@@ -109,6 +127,7 @@ export function useTerminal(config: TerminalConfig = {}) {
       }
     })
   }
+
 
   const navigateHistory = (direction: number) => {
     if (commandHistory.value.length === 0) return
@@ -160,6 +179,8 @@ export function useTerminal(config: TerminalConfig = {}) {
 
   const clearHistory = () => {
     commandHistory.value = []
+    historyIndex.value = -1
+    currentCommand.value = ''
   }
 
   // Cursor blinking effect
@@ -199,7 +220,7 @@ export function useTerminal(config: TerminalConfig = {}) {
     removeCommand,
     addToHistory,
     clearHistory,
-    
+
     // Configuration
     username,
     hostname,

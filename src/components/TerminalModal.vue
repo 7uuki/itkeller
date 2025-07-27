@@ -10,6 +10,7 @@
         <!-- Terminal Window Component -->
         <TerminalWindow
           :is-modal="true"
+          :terminal="terminal"
           :active-view="activeView"
           :current-command="currentCommand"
           :command-history="commandHistory"
