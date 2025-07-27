@@ -10,9 +10,10 @@
           <ThemeToggleSwitch />
         </div>
         
-        <div class="nav-brand">
+        <div class="nav-brand no-text-cursor">
           <router-link to="/" class="brand-link">
-            <h2>ItKeller.com</h2>
+            <img src="/src/assets/itkeller.svg" alt="ItKeller" class="brand-icon" />
+            <p class="brand-text">ITKeller</p>
           </router-link>
         </div>
       </div>
@@ -156,10 +157,29 @@ onUnmounted(() => {
   text-decoration: none;
   color: inherit;
   transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .nav-brand .brand-link:hover {
   color: var(--button-bg);
+}
+.brand-text{
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.brand-icon {
+  height: 52px;
+  transition: filter 0.3s ease;
+}
+
+.nav-brand .brand-link:hover .brand-icon {
+  filter: brightness(1.2);
 }
 
 .nav-brand h2 {
@@ -260,11 +280,36 @@ onUnmounted(() => {
 @media (max-width: 900px) {
   .nav-container {
     padding: 0 1rem;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
   .nav-left {
     gap: 1rem;
-    min-width: 160px;
+    min-width: auto;
+    z-index: 1002;
+    flex-shrink: 0;
+  }
+  
+  .nav-brand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    pointer-events: none;
+  }
+  
+  .nav-brand .brand-link {
+    pointer-events: all;
+  }
+  
+  .nav-right {
+    z-index: 1002;
+    gap: 0.8rem;
+    flex-shrink: 0;
   }
   
   .nav-brand h2 {
@@ -306,14 +351,6 @@ onUnmounted(() => {
     margin-right: 1rem;
   }
 
-  .nav-right {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    gap: 0.8rem;
-  }
-
   .desktop-only {
     display: none;
   }
@@ -324,6 +361,25 @@ onUnmounted(() => {
 
   .nav-toggle {
     display: flex;
+  }
+  
+  /* Additional responsive adjustments for very small screens */
+  @media (max-width: 400px) {
+    .nav-left {
+      gap: 0.5rem;
+    }
+    
+    .brand-text {
+      font-size: 1rem !important;
+    }
+    
+    .brand-icon {
+      height: 40px !important;
+    }
+    
+    .nav-container {
+      padding: 0 0.5rem;
+    }
   }
 }
 </style>

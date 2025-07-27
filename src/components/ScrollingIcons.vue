@@ -47,7 +47,7 @@ const defaultIcons: IconItem[] = [
     { src: 'src/assets/scrollingicons/postgresql.svg', title: 'PostgreSQL' },
     { src: 'src/assets/scrollingicons/python.svg', title: 'Python' },
     { src: 'src/assets/scrollingicons/react.svg', title: 'React' },
-    { src: 'src/assets/scrollingicons/tailwind.svg', title: 'Tailwind' },
+    { src: 'src/assets/scrollingicons/springboot.svg', title: 'Spring Boot' },
     { src: 'src/assets/scrollingicons/typescript.svg', title: 'TypeScript' },
     { src: 'src/assets/scrollingicons/vue.svg', title: 'Vue.js' },
 ]
