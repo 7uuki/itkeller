@@ -7,23 +7,49 @@
         <span class="btn-maximize" @click="$emit('maximize')" :title="isModal ? 'Maximize Terminal' : 'Maximize Terminal'"></span>
       </div>
       
-      <div v-if="!isModal" class="terminal-title">Terminal</div>
+      <!-- Dialog Status Indicator - Right of macOS buttons -->
+      <div v-if="terminalRef.isInDialog.value" class="dialog-status-left">
+        <div class="live-indicator" :title="getDialogModeTooltip()">
+          <div class="live-dot"></div>
+          <span class="live-text no-text-cursor">Dialog Mode</span>
+        </div>
+        
+        <!-- Dialog Control Buttons - Right next to Dialog Mode -->
+        <div class="dialog-buttons-inline">
+          <button 
+            @click="retryDialog"
+            class="glass-btn retry-glass-btn"
+            :title="getRetryTooltip()"
+          >
+            <img :src="RetryIcon" alt="Retry" class="glass-btn-icon" />
+          </button>
+          <button 
+            @click="cancelDialog"
+            class="glass-btn cancel-glass-btn"
+            :title="getCancelTooltip()"
+          >
+            <img :src="CrossIcon" alt="Cancel" class="glass-btn-icon" />
+          </button>
+        </div>
+      </div>
+      
+      <div v-if="!isModal" class="terminal-title">Contact Me</div>
       <div v-else class="terminal-title">Terminal - Maximized</div>
       
       <div class="header-right">
-        <!-- Action Buttons - Only show in terminal mode -->
-        <div v-if="activeView === 'terminal'" class="action-buttons">
+        <!-- Action Buttons - Always show, but help behavior changes in dialog -->
+        <div class="action-buttons">
           <button 
-            @click="terminal.clearHistory()"
+            @click="clearTerminal"
             class="action-btn"
-            title="Clear Terminal"
+            :title="getClearTooltip()"
           >
-            <img :src="BroomIcon" alt="Clear" class="action-icon" />
+            <img :src="DeleteIcon" alt="Clear" class="action-icon" />
           </button>
           <button 
             @click="showHelp"
             class="action-btn"
-            title="Show Help"
+            :title="getHelpTooltip()"
           >
             <img :src="QuestionMarkIcon" alt="Help" class="action-icon" />
           </button>
@@ -57,14 +83,22 @@
       <div class="terminal-history">
         <div v-for="(entry, index) in terminalRef.commandHistory.value" :key="index" class="history-entry">
           <div class="prompt-line">
-            <span class="user">{{ terminalRef.username }}</span>@<span class="hostname">{{ terminalRef.hostname }}</span>:<span class="path">{{ terminalRef.currentPath }}</span>$ <span class="command-text">{{ entry.command }}</span>
+            <!-- Show different prompt for dialog mode -->
+            <span v-if="entry.command.startsWith('> ')">{{ entry.command }}</span>
+            <span v-else>
+              <span class="user">{{ terminalRef.username }}</span>@<span class="hostname">{{ terminalRef.hostname }}</span>:<span class="path">{{ terminalRef.currentPath }}</span>$ <span class="command-text">{{ entry.command }}</span>
+            </span>
           </div>
           <div v-if="entry.output" class="output">{{ entry.output }}</div>
         </div>
       </div>
       <div class="terminal-input-line" @click="focusInput">
         <span class="prompt">
-          <span class="user">{{ terminalRef.username }}</span>@<span class="hostname">{{ terminalRef.hostname }}</span>:<span class="path">{{ terminalRef.currentPath }}</span>$ 
+          <!-- Dynamic prompt based on dialog state -->
+          <span v-if="terminalRef.isInDialog.value" class="dialog-prompt">></span>
+          <span v-else>
+            <span class="user">{{ terminalRef.username }}</span>@<span class="hostname">{{ terminalRef.hostname }}</span>:<span class="path">{{ terminalRef.currentPath }}</span>$ 
+          </span>
         </span>
         <div class="input-container">
           <textarea 
@@ -75,11 +109,11 @@
             @keydown.down="terminalRef.navigateHistory(-1)"
             @keydown.up="terminalRef.navigateHistory(1)"
             @keydown.tab.prevent="terminalRef.autoComplete()"
-
+            @keydown.shift.tab.prevent=""
             @focus="updateIsInputFocused(true); autoResizeTextarea()"
             @blur="updateIsInputFocused(false)"
             class="terminal-input"
-            placeholder="Type a command..."
+            :placeholder="terminalRef.isInDialog.value ? 'Type your response...' : 'Type a command...'"
             spellcheck="false"
             autocomplete="off"
             rows="1"
@@ -105,12 +139,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
-import BroomIcon from '../assets/broom.svg'
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import DeleteIcon from '../assets/delete.svg'
 import QuestionMarkIcon from '../assets/questionmark.svg'
+import RetryIcon from '../assets/retry.svg'
+import CrossIcon from '../assets/cross.svg'
 import { UseTerminal } from '@/composables/useTerminal'
 const terminalRef = defineModel<UseTerminal>('terminal', { required: true })
-
 
 defineProps<{ isModal?: boolean }>()
 
@@ -136,7 +171,30 @@ const updateActiveView = (view: 'terminal' | 'classic') => {
 const executeCommand = () => {
   terminalRef.value.executeCommand()
 }
+
+const cancelDialog = () => {
+  const output = terminalRef.value.cancelDialog()
+  if (output) {
+    terminalRef.value.addToHistory({ command: '^C', output })
+  }
+}
+
+const retryDialog = () => {
+  const output = terminalRef.value.restartDialog()
+  if (output) {
+    terminalRef.value.addToHistory({ command: 'restart', output })
+  }
+}
+
 const terminalInput = ref<HTMLTextAreaElement>()
+
+// Keyboard event handler for Ctrl+C
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.ctrlKey && event.key === 'c' && terminalRef.value.isInDialog.value) {
+    event.preventDefault()
+    cancelDialog()
+  }
+}
 
 // Auto-resize textarea function
 const autoResizeTextarea = () => {
@@ -153,12 +211,81 @@ const focusInput = () => {
   }
 }
 
-// Show help function
-const showHelp = () => {
-  updateCurrentCommand('help')
-  terminalRef.value.executeCommand()
+const clearTerminal = () => {
+  terminalRef.value.cancelDialog()
+  terminalRef.value.clearHistory()
 }
 
+// Show help function - context-aware
+const showHelp = () => {
+  if (terminalRef.value.isInDialog.value) {
+    // Dialog-specific help
+    const dialogName = terminalRef.value.currentDialog.value?.definition.name || 'dialog'
+    const helpText = getDialogHelp(dialogName)
+    terminalRef.value.addToHistory({ command: '> help', output: helpText })
+  } else {
+    // Regular help
+    updateCurrentCommand('help')
+    terminalRef.value.executeCommand()
+  }
+}
+
+// Dialog-specific help text
+const getDialogHelp = (dialogName: string): string => {
+  const helpTexts: Record<string, string> = {
+    contact: `📋 Contact Dialog Help:
+• Answer each question with your response (Enter to submit)
+• If you dont like this dialog style you can switch to classic view (button top-right in header)
+• At the end of the dialog, confirm with 'yes' or 'no' to send the message to me :)
+• Use Ctrl+Q to cancel anytime (or the button)
+• Use Ctrl+R to restart from beginning (or the button)`,
+    default: `📋 Dialog Help:
+• Follow the prompts step by step
+• Use Ctrl+Q to cancel the dialog (or the button)
+• Use Ctrl+R to restart from beginning (or the button)
+• Type your responses and press Enter`
+  }
+  return helpTexts[dialogName] || helpTexts.default
+}
+
+// Tooltip generators
+const getDialogModeTooltip = (): string => {
+  const dialogName = terminalRef.value.currentDialog.value?.definition.name || 'unknown'
+  const currentStep = (terminalRef.value.currentDialog.value?.currentStep || 0) + 1
+  const totalSteps = terminalRef.value.currentDialog.value?.definition.steps.length || 0
+  return `Active Dialog: ${dialogName} (Step ${currentStep}/${totalSteps})\nKeyboard shortcuts: Ctrl+Q (cancel), Ctrl+R (restart)`
+}
+
+const getRetryTooltip = (): string => {
+  const dialogName = terminalRef.value.currentDialog.value?.definition.name || 'dialog'
+  return `Restart ${dialogName} from the beginning\nKeyboard shortcut: Ctrl+R`
+}
+
+const getCancelTooltip = (): string => {
+  const dialogName = terminalRef.value.currentDialog.value?.definition.name || 'dialog'
+  return `Cancel ${dialogName} and return to terminal\nKeyboard shortcut: Ctrl+Q`
+}
+
+const getClearTooltip = (): string => {
+  return terminalRef.value.isInDialog.value 
+    ? 'Clear terminal history (dialog continues)'
+    : 'Clear terminal history'
+}
+
+const getHelpTooltip = (): string => {
+  return terminalRef.value.isInDialog.value
+    ? 'Show dialog-specific help and shortcuts'
+    : 'Show available commands and help'
+}
+
+// Lifecycle hooks
+onMounted(() => {
+  document.addEventListener('keydown', handleKeyDown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeyDown)
+})
 
 // Watch for changes in currentCommand to auto-resize textarea
 watch(() => terminalRef.value.currentCommand, () => {
@@ -166,7 +293,6 @@ watch(() => terminalRef.value.currentCommand, () => {
     autoResizeTextarea()
   })
 })
-
 </script>
 
 <style scoped>
@@ -245,6 +371,183 @@ watch(() => terminalRef.value.currentCommand, () => {
   align-items: center;
   animation: fadeInSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transform-origin: right center;
+}
+
+/* Dialog Status Indicator - Left side next to macOS buttons */
+.dialog-status-left {
+  position: absolute;
+  left: 100px; /* Position after the macOS buttons */
+  display: flex;
+  align-items: center;
+  animation: fadeInSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  position: relative;
+  animation: livePulse 2s ease-in-out infinite;
+  box-shadow: 
+    0 0 0 0 rgba(var(--accent-primary-rgb, 64, 224, 208), 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.live-dot::before {
+  content: '';
+  position: absolute;
+  top: -2.8px;
+  left: -2.9px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--accent-primary);
+  opacity: 0;
+  animation: liveRipple 2s ease-in-out infinite;
+}
+
+/* Glass-style buttons for dialog controls */
+.dialog-buttons-inline {
+  display: flex;
+  gap: 8px;
+  margin-left: 8px;
+  align-items: center;
+}
+
+.glass-btn {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  position: relative;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.glass-btn:active {
+  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.cancel-glass-btn:hover {
+  background: rgba(255, 68, 68, 0.2) !important;
+  border-color: rgba(255, 68, 68, 0.3) !important;
+}
+
+
+.cancel-glass-btn:active {
+  background: rgba(255, 68, 68, 0.3) !important;
+}
+
+.retry-glass-btn:hover {
+  background: rgba(68, 68, 255, 0.2) !important;
+  border-color: rgba(68, 68, 255, 0.3) !important;
+}
+
+
+.retry-glass-btn:active {
+  background: rgba(68, 68, 255, 0.3) !important;
+}
+
+.glass-btn-icon {
+  width: 14px;
+  height: 14px;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  opacity: 0.9;
+}
+
+.live-text {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes livePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes liveRipple {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Remove default browser tooltips and add custom styling */
+.live-indicator,
+.glass-btn,
+.action-btn {
+  position: relative;
+}
+
+/* Custom tooltip styling - browser will handle the display */
+.live-indicator[title],
+.glass-btn[title],
+.action-btn[title] {
+  cursor: help;
+}
+.dialog-status {
+  display: flex;
+  align-items: center;
+  animation: fadeInSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.dialog-indicator {
+  background: var(--accent-primary);
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* Animation for action buttons */
@@ -355,7 +658,6 @@ watch(() => terminalRef.value.currentCommand, () => {
 }
 
 .terminal-body {
-  
   background: #1e1e1e;
   color: #ffffff;
   padding: 16px;
@@ -375,7 +677,7 @@ watch(() => terminalRef.value.currentCommand, () => {
 }
 
 .terminal-history {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   text-align: left;
 }
 
@@ -456,6 +758,12 @@ watch(() => terminalRef.value.currentCommand, () => {
 .prompt .path {
   color: var(--accent-tertiary);
   font-weight: 600;
+}
+
+.dialog-prompt {
+  color: var(--accent-primary);
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .terminal-input {
@@ -589,6 +897,46 @@ watch(() => terminalRef.value.currentCommand, () => {
   .placeholder-items {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+  
+  .dialog-status-left {
+    left: 80px; /* Adjust for smaller screens */
+  }
+  
+  .live-indicator {
+    padding: 4px 8px;
+    gap: 6px;
+  }
+  
+  .live-text {
+    font-size: 10px;
+  }
+  
+  .live-dot {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .live-dot::before {
+    width: 10px;
+    height: 10px;
+    top: -2px;
+    left: -2px;
+  }
+  
+  .dialog-buttons-inline {
+    margin-left: 8px;
+    gap: 6px;
+  }
+  
+  .glass-btn {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .glass-btn-icon {
+    width: 12px;
+    height: 12px;
   }
 }
 </style>
