@@ -37,6 +37,7 @@
   --accent-tertiary: #ff6b6b;
   --accent-primary-rgb: 91, 33, 182;
   --accent-secondary-rgb: 219, 141, 208;
+  --accent-tertiary-rgb: 255, 107, 107;
 }
 
 /* Dark Theme */
@@ -57,6 +58,7 @@
   --accent-tertiary: #ff6b6b;
   --accent-primary-rgb: 99, 102, 241;
   --accent-secondary-rgb: 139, 92, 246;
+  --accent-tertiary-rgb: 255, 107, 107;
 }
 
 /* Pink Theme */
@@ -77,6 +79,7 @@
   --accent-tertiary: #f97316;
   --accent-primary-rgb: 236, 72, 153;
   --accent-secondary-rgb: 245, 158, 11;
+  --accent-tertiary-rgb: 249, 115, 22;
 }
 
 /* Cloudy Theme (Dark mode with blue/purple accents) */
@@ -97,6 +100,7 @@
   --accent-tertiary: #ff6b6b;
   --accent-primary-rgb: 99, 102, 241;
   --accent-secondary-rgb: 139, 92, 246;
+  --accent-tertiary-rgb: 255, 107, 107;
 }
 
 /* Sunny Theme (Light mode with warm accents) */
@@ -117,6 +121,7 @@
   --accent-tertiary: #f97316;
   --accent-primary-rgb: 236, 72, 153;
   --accent-secondary-rgb: 245, 158, 11;
+  --accent-tertiary-rgb: 249, 115, 22;
 }
 
 body {
@@ -149,6 +154,57 @@ button:focus, input:focus, select:focus, textarea:focus, a:focus {
 button:active, input:active, select:active, textarea:active, a:active {
   outline: none;
 }
+
+/* Enhanced hover styles for elements with labels/titles */
+[title]:hover,
+[aria-label]:hover,
+label:hover,
+.has-label:hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+/* Special hover effects for interactive elements with labels */
+button[title]:hover,
+a[title]:hover,
+[role="button"][title]:hover {
+  box-shadow: 0 8px 25px rgba(var(--accent-primary-rgb), 0.15);
+}
+
+/* Input field autofill and suggestion styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--bg-secondary) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  border-color: var(--accent-secondary) !important;
+  caret-color: var(--text-primary) !important;
+  transition: all 0.3s ease;
+}
+
+/* Browser suggestion dropdown styling */
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+  margin: 0;
+}
+
+/* Custom styling for browser suggestions */
+input:-webkit-autofill::first-line {
+  font-family: inherit;
+  color: var(--text-primary) !important;
+}
+
+
 
 #app {
   min-height: 100vh;
@@ -186,7 +242,25 @@ h1 {
 
 .btn:hover {
   background-color: var(--button-hover);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(var(--accent-primary-rgb), 0.2);
+  filter: brightness(1.05);
+}
+
+/* Enhanced hover for buttons with labels */
+.btn[title]:hover,
+.btn[aria-label]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(var(--accent-primary-rgb), 0.25);
+}
+
+/* Glowing effect for important interactive elements */
+.btn-primary:hover,
+.book-call-btn:hover,
+.action-btn:hover {
+  box-shadow: 
+    0 8px 25px rgba(var(--accent-primary-rgb), 0.2),
+    0 0 20px rgba(var(--accent-primary-rgb), 0.1);
 }
 
 
@@ -196,7 +270,14 @@ h1 {
   border-radius: 8px;
   border: 1px solid var(--border-color);
   margin: 1em 0;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(var(--accent-primary-rgb), 0.15);
+  border-color: rgba(var(--accent-primary-rgb), 0.3);
+  background-color: var(--bg-primary);
 }
 
 .read-the-docs {
@@ -236,8 +317,11 @@ h1 {
 }
 
 .theme-toggle:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 8px var(--shadow);
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 
+    0 8px 25px var(--shadow),
+    0 0 20px rgba(var(--accent-primary-rgb), 0.2);
+  filter: brightness(1.1);
 }
 .imagenodrdag {
   -webkit-user-drag: none; /* Chrome, Safari */
@@ -271,4 +355,35 @@ h1 {
   to {
     mask-size: 350vmax;
   }
+}
+
+/* Additional global hover enhancements */
+.nav-button:hover,
+.footer-btn:hover,
+.social-link:hover,
+.filter-btn:hover,
+.language-option:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Glow effect for interactive elements */
+.nav-button:hover,
+.social-link:hover {
+  box-shadow: 0 8px 25px rgba(var(--accent-primary-rgb), 0.15);
+}
+
+/* Enhanced image hover effects */
+.image-thumbnail:hover,
+.portfolio-image:hover {
+  transform: scale(1.02) translateY(-2px);
+  filter: brightness(1.05) contrast(1.1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Subtle hover for text elements with labels */
+[title]:not(button):not(a):not(input):not(textarea):hover {
+  color: var(--accent-primary);
+  text-shadow: 0 2px 8px rgba(var(--accent-primary-rgb), 0.2);
 }

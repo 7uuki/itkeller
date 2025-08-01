@@ -18,103 +18,49 @@
         {{ t.contact.subtitle }}
       </p>
       
-      <form 
-        :ref="formReveal.element"
-        :style="formReveal.style.value"
-        class="contact-form" 
-        @submit.prevent="handleSubmit"
+      <!-- Terminal Container -->
+      <div 
+        :ref="terminalReveal.element"
+        :style="terminalReveal.style.value"
+        class="terminal-container"
       >
-        <div class="form-row">
-          <div class="form-group">
-            <input 
-              type="text" 
-              id="fullName" 
-              v-model="form.fullName"
-              :placeholder="t.contact.form.namePlaceholder"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <input 
-              type="email" 
-              id="email" 
-              v-model="form.email"
-              :placeholder="t.contact.form.emailPlaceholder"
-              required
-            />
-          </div>
-        </div>
-        
-        <div class="form-group message-group">
-          <textarea 
-            id="message" 
-            v-model="form.message"
-            :placeholder="t.contact.form.messagePlaceholder"
-            rows="8"
-            required
-          ></textarea>
-        </div>
-        
-        <button type="submit" class="book-call-btn" :disabled="isSubmitting">
-          {{ isSubmitting ? t.contact.form.sending : t.contact.form.send }}
-        </button>
-      </form>
-
-      <!-- Success Animation Overlay -->
-      <div v-if="showSuccessAnimation" class="success-overlay" @click="closeSuccessAnimation">
-        <div class="success-modal">
-          <Vue3Lottie 
-            v-if="emailSuccessAnimation"
-            :animation-data="emailSuccessAnimation"
-            :height="200"
-            :width="200"
-            :loop="false"
-            @complete="onAnimationComplete"
-          />
-          <div v-else class="loading-placeholder">
-            <div class="spinner"></div>
-          </div>
-          <h3 class="success-title">{{ t.contact.form.success }}</h3>
-          <p class="success-message">Thank you for your message! We'll get back to you soon.</p>
-          <button class="close-btn" @click="closeSuccessAnimation">Close</button>
-        </div>
+        <TerminalWindow
+          v-model:terminal="terminal"
+          :is-modal="false"
+          @close="closeTerminal"
+          @minimize="minimizeTerminal"
+          @maximize="maximizeTerminal"
+        />
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { useLanguage } from '../composables/useLanguage'
-import { Vue3Lottie } from 'vue3-lottie'
+import { useTerminal } from '../composables/useTerminal'
+import TerminalWindow from '../components/TerminalWindow.vue'
 
 const { t } = useLanguage()
 
-const form = ref({
-  fullName: '',
-  email: '',
-  message: ''
-})
-
-const showSuccessAnimation = ref(false)
-const isSubmitting = ref(false)
-const emailSuccessAnimation = ref(null)
-
-// Load the Lottie animation
-onMounted(async () => {
-  try {
-    console.log('Loading Lottie animation...')
-    const response = await fetch('/Emailsuccessfullysent.lottie')
-    console.log('Response status:', response.status)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+// Terminal configuration and setup
+const terminal = useTerminal({
+  username: 'visitor',
+  hostname: 'portfolio',
+  currentPath: '~/contact',
+  cursorBlinkInterval: 530,
+  maxHistorySize: 50,
+  customCommands: {
+    portfolio: () => 'Welcome to my portfolio! Try commands like: about, skills, projects, contact',
+    about: () => 'I am a passionate developer with expertise in web technologies.\nSpecializing in Vue.js, TypeScript, and modern web development.',
+    skills: () => 'Technical Skills:\n• Frontend: Vue.js, React, TypeScript, HTML5, CSS3\n• Backend: Node.js, Python, PHP\n• Tools: Git, Docker, VS Code\n• Databases: MySQL, MongoDB, PostgreSQL',
+    projects: () => 'Recent Projects:\n1. Interactive Portfolio Website (Vue.js + TypeScript)\n2. E-commerce Platform (React + Node.js)\n3. Task Management App (Vue.js + Express)\n4. Real-time Chat Application (Socket.io)',
+    theme: () => 'Portfolio theme: Modern dark theme with interactive elements\nBuilt with: Vue 3, TypeScript, Vite',
+    sudo: (args) => {
+      if (args.length === 0) return 'sudo: command not found'
+      return '[sudo] password for developer: Permission denied. Nice try! 😉'
     }
-    const animationData = await response.json()
-    console.log('Animation data loaded:', animationData)
-    emailSuccessAnimation.value = animationData
-  } catch (error) {
-    console.error('Failed to load Lottie animation:', error)
   }
 })
 
@@ -135,45 +81,28 @@ const descriptionReveal = useScrollReveal({
   delay: 200
 })
 
-const formReveal = useScrollReveal({
-  translateY: '50px',
+const terminalReveal = useScrollReveal({
+  translateY: '30px',
   opacity: { from: 0, to: 1 },
-  duration: '0.9s',
+  duration: '0.8s',
   easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
   delay: 300
 })
 
-const handleSubmit = async () => {
-  isSubmitting.value = true
-  
-  // Simulate form submission delay
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  
-  // Handle form submission here
-  console.log('Form submitted:', form.value)
-  
-  // You can add your form submission logic here
-  // For example, send to an API endpoint
-  
-  // Reset form after submission
-  form.value = {
-    fullName: '',
-    email: '',
-    message: ''
-  }
-  
-  isSubmitting.value = false
-  console.log('Showing success animation...')
-  showSuccessAnimation.value = true
+// Terminal control functions
+const closeTerminal = () => {
+  // Could hide terminal or show alternative contact method
+  console.log('Terminal closed')
 }
 
-const closeSuccessAnimation = () => {
-  showSuccessAnimation.value = false
+const minimizeTerminal = () => {
+  // Could minimize terminal or switch to classic view
+  console.log('Terminal minimized')
 }
 
-const onAnimationComplete = () => {
-  // Animation completed, you can add additional logic here if needed
-  console.log('Animation completed')
+const maximizeTerminal = () => {
+  // Could open terminal in modal
+  console.log('Terminal maximized')
 }
 </script>
 
@@ -230,229 +159,13 @@ const onAnimationComplete = () => {
   margin-right: auto;
 }
 
-.contact-form {
+/* Terminal Container */
+.terminal-container {
   max-width: 800px;
   margin: 0 auto;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.form-group {
-  width: 100%;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 16px 20px;
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  resize: none;
-  box-sizing: border-box;
-}
-
-.form-group textarea {
-  min-height: 140px;
-  overflow-y: auto;
-}
-
-/* Custom scrollbar for textarea */
-.form-group textarea::-webkit-scrollbar {
-  width: 6px;
-}
-
-.form-group textarea::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.form-group textarea::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-  transition: background 0.3s ease;
-}
-
-.form-group textarea::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
-}
-
-/* Remove ALL scrollbar buttons and arrows */
-.form-group textarea::-webkit-scrollbar-button {
-  width: 0;
-  height: 0;
-  display: none;
-}
-
-.form-group textarea::-webkit-scrollbar-button:start:decrement,
-.form-group textarea::-webkit-scrollbar-button:end:increment {
-  width: 0;
-  height: 0;
-  display: none;
-}
-
-.form-group textarea::-webkit-scrollbar-corner {
-  background: transparent;
-  display: none;
-}
-
-/* Firefox scrollbar */
-.form-group textarea {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: var(--text-secondary);
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(var(--accent-primary-rgb), 0.1);
-}
-
-.error-message {
-  color: #dc3545;
-  font-size: 0.875rem;
-  margin-top: 6px;
-  text-align: left;
-  padding-left: 4px;
-}
-
-.form-group.message-group {
-  margin-bottom: 24px;
-}
-
-.form-group.message-group textarea {
-  margin-bottom: 0;
-}
-
-.book-call-btn {
-  width: 100%;
-  max-width: 100%;
-  padding: 16px 32px;
-  background: var(--button-bg);
-  color: var(--button-text);
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-
-.book-call-btn:hover {
-  background: var(--button-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px var(--shadow);
-}
-
-.book-call-btn:active {
-  transform: translateY(0);
-}
-
-.book-call-btn:disabled {
-  background: var(--border-color);
-  color: var(--text-secondary);
-  cursor: not-allowed;
-  transform: none;
-}
-
-.book-call-btn:disabled:hover {
-  background: var(--border-color);
-  transform: none;
-  box-shadow: none;
-}
-
-/* Success Animation Overlay */
-.success-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
-}
-
-.success-modal {
-  background: var(--bg-primary);
-  border-radius: 20px;
-  padding: 40px;
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--border-color);
-}
-
-.success-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 20px 0 10px 0;
-}
-
-.success-message {
-  color: var(--text-secondary);
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
-.close-btn {
-  background: var(--button-bg);
-  color: var(--button-text);
-  border: none;
-  border-radius: 12px;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.close-btn:hover {
-  background: var(--button-hover);
-  transform: translateY(-2px);
-}
-
-.loading-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  width: 200px;
-  margin: 0 auto;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid var(--border-color);
-  border-top: 4px solid var(--accent-primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Mobile responsiveness */
@@ -474,24 +187,8 @@ const onAnimationComplete = () => {
     margin-bottom: 32px;
   }
   
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    padding: 14px 16px;
-  }
-  
-  .form-group textarea {
-    margin-bottom: 20px;
-  }
-  
-  .book-call-btn {
-    padding: 14px 28px;
-    font-size: 1rem;
+  .terminal-container {
+    margin: 0 8px;
   }
 }
 

@@ -8,13 +8,11 @@
     <ServicesSection />
     <PortfolioSection />
     <ContactSection />
-    <TestSection />
   </div>
 </template>
 
 <script setup lang="ts">
 import HeroSection from './HeroSection.vue'
-import TestSection from './TestSection.vue'
 import AboutSection from './AboutSection.vue'
 import AcademicSection from './AcademicSection.vue'
 import ServicesSection from './ServicesSection.vue'
