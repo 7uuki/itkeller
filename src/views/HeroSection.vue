@@ -6,9 +6,9 @@ import { useLanguage } from '../composables/useLanguage'
 import ImageModal from '../components/ImageModal.vue'
 import LinkIcon from '../components/LinkIcon.vue'
 import profilePicture from '../assets/picture.png'
-import mailIcon from '../assets/mail.svg'
-import githubIcon from '../assets/github.svg'
-import linkedinIcon from '../assets/linkedin.svg'
+import mailIcon from '@/assets/mail.svg?raw'
+import githubIcon from '@/assets/github.svg?raw'
+import linkedinIcon from '@/assets/linkedin.svg?raw'
 
 const { t } = useLanguage()
 
@@ -105,7 +105,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
         <div class="social-links" ref="socialElement" :style="socialStyle">
           
           <LinkIcon 
-            :svg-src="mailIcon"
+            :svg-content="mailIcon"
             href="mailto:info@itkeller.com"
             :title="t.hero.emailTitle"
             alt="Email"
@@ -115,7 +115,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
             :stroke-width="2"
           />
           <LinkIcon 
-            :svg-src="githubIcon"
+            :svg-content="githubIcon"
             href="https://github.com/7uuki"
             :title="t.hero.githubTitle"
             alt="GitHub"
@@ -123,7 +123,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
             fill-color="var(--text-primary)"
           />
           <LinkIcon 
-            :svg-src="linkedinIcon"
+            :svg-content="linkedinIcon"
             href="https://www.linkedin.com/in/lukas-keller-52867b258"
             :title="t.hero.linkedinTitle"
             alt="LinkedIn"
