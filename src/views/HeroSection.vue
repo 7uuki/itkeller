@@ -6,6 +6,9 @@ import { useLanguage } from '../composables/useLanguage'
 import ImageModal from '../components/ImageModal.vue'
 import LinkIcon from '../components/LinkIcon.vue'
 import profilePicture from '../assets/picture.png'
+import mailIcon from '../assets/mail.svg'
+import githubIcon from '../assets/github.svg'
+import linkedinIcon from '../assets/linkedin.svg'
 
 const { t } = useLanguage()
 
@@ -102,7 +105,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
         <div class="social-links" ref="socialElement" :style="socialStyle">
           
           <LinkIcon 
-            svg-src="/src/assets/mail-alt-svgrepo-com.svg"
+            :svg-src="mailIcon"
             href="mailto:info@itkeller.com"
             :title="t.hero.emailTitle"
             alt="Email"
@@ -112,7 +115,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
             :stroke-width="2"
           />
           <LinkIcon 
-            svg-src="/src/assets/github-142-svgrepo-com.svg"
+            :svg-src="githubIcon"
             href="https://github.com/7uuki"
             :title="t.hero.githubTitle"
             alt="GitHub"
@@ -120,7 +123,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
             fill-color="var(--text-primary)"
           />
           <LinkIcon 
-            svg-src="/src/assets/linkedin-svgrepo-com.svg"
+            :svg-src="linkedinIcon"
             href="https://www.linkedin.com/in/lukas-keller-52867b258"
             :title="t.hero.linkedinTitle"
             alt="LinkedIn"
@@ -426,7 +429,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
 
   .hero-container {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0rem;
     text-align: center;
     align-items: center;
     flex: none;

@@ -4,6 +4,9 @@ import { useTypingReveal } from '../composables/useTypingReveal'
 import ImageModal from '../components/ImageModal.vue'
 import LinkIcon from '../components/LinkIcon.vue'
 import profilePicture from '../assets/picture.png'
+import mailIcon from '../assets/mail-alt-svgrepo-com.svg'
+import githubIcon from '../assets/github-142-svgrepo-com.svg'
+import linkedinIcon from '../assets/linkedin-svgrepo-com.svg'
 
 const scrollTo = (elementId: string) => {
   const element = document.getElementById(elementId)
@@ -80,7 +83,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
         <div class="social-links" ref="socialElement" :style="socialStyle">
           
           <LinkIcon 
-            svg-src="/src/assets/mail-alt-svgrepo-com.svg"
+            :svg-src="mailIcon"
             href="mailto:your.email@example.com"
             title="Write me an Email"
             alt="Email"
@@ -90,7 +93,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
             :stroke-width="2"
           />
           <LinkIcon 
-            svg-src="/src/assets/github-142-svgrepo-com.svg"
+            :svg-src="githubIcon"
             href="https://github.com/yourusername"
             title="This is my GitHub"
             alt="GitHub"
@@ -98,7 +101,7 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
             fill-color="var(--text-primary)"
           />
           <LinkIcon 
-            svg-src="/src/assets/linkedin-svgrepo-com.svg"
+            :svg-src="linkedinIcon"
             href="https://linkedin.com/in/yourprofile"
             title="Take a look at my LinkedIn"
             alt="LinkedIn"

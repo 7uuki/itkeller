@@ -5,7 +5,7 @@
     <div class="example">
       <h3>GitHub Icon - Default Color</h3>
       <RecolorableSvg 
-        src="/src/assets/github-142-svgrepo-com.svg"
+        :src="githubIcon"
         :width="32"
         :height="32"
       />
@@ -14,7 +14,7 @@
     <div class="example">
       <h3>GitHub Icon - Accent Primary</h3>
       <RecolorableSvg 
-        src="/src/assets/github-142-svgrepo-com.svg"
+        :src="githubIcon"
         :width="32"
         :height="32"
         fill-color="var(--accent-primary)"
@@ -24,7 +24,7 @@
     <div class="example">
       <h3>GitHub Icon - Accent Secondary Stroke</h3>
       <RecolorableSvg 
-        src="/src/assets/github-142-svgrepo-com.svg"
+        :src="githubIcon"
         :width="32"
         :height="32"
         fill-color="none"
@@ -36,7 +36,7 @@
     <div class="example">
       <h3>GitHub Icon - Theme Aware</h3>
       <RecolorableSvg 
-        src="/src/assets/github-142-svgrepo-com.svg"
+        :src="githubIcon"
         :width="32"
         :height="32"
         fill-color="var(--text-primary)"
@@ -58,6 +58,7 @@
 
 <script setup lang="ts">
 import RecolorableSvg from './RecolorableSvg.vue'
+import githubIcon from '../assets/github-142-svgrepo-com.svg'
 
 // Example inline SVG
 const inlineSvg = `

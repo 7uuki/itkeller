@@ -12,7 +12,7 @@
         
         <div class="nav-brand no-text-cursor">
           <router-link to="/" class="brand-link">
-            <img src="/src/assets/itkeller.svg" alt="ItKeller" class="brand-icon" />
+            <img :src="logoIcon" alt="ItKeller" class="brand-icon" />
             <p class="brand-text">ITKeller</p>
           </router-link>
         </div>
@@ -64,6 +64,7 @@ import ArrowButton from './ArrowButton.vue'
 import LegalSwitch from './LegalSwitch.vue'
 import { useRouter } from 'vue-router'
 import { useLanguage } from '../composables/useLanguage'
+import logoIcon from '../assets/itkeller.svg'
 
 const router = useRouter()
 const { t } = useLanguage()
