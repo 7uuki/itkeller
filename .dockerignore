@@ -35,7 +35,8 @@ Dockerfile
 docker-compose*.yml
 .dockerignore
 
-# Documentation
+# Documentation and Guides
+guides/
 *.md
 
 # Logs
@@ -45,3 +46,6 @@ logs
 # Temporary files
 .tmp
 .cache
+
+# GitHub
+.github
