@@ -35,21 +35,34 @@ const props = defineProps<{
   showTitle?: boolean
 }>()
 
-// Default icons using available assets
+// Import all icons dynamically for proper bundling
+import css3 from '@/assets/scrollingicons/css3.svg'
+import docker from '@/assets/scrollingicons/docker.svg'
+import git from '@/assets/scrollingicons/git.svg'
+import html5 from '@/assets/scrollingicons/html5.svg'
+import javascript from '@/assets/scrollingicons/javascript.svg'
+import vue from '@/assets/scrollingicons/vue.svg'
+import nodejs from '@/assets/scrollingicons/nodejs.svg'
+import postgresql from '@/assets/scrollingicons/postgresql.svg'
+import python from '@/assets/scrollingicons/python.svg'
+import react from '@/assets/scrollingicons/react.svg'
+import springboot from '@/assets/scrollingicons/springboot.svg'
+import typescript from '@/assets/scrollingicons/typescript.svg'
+
+// Default icons using imported assets
 const defaultIcons: IconItem[] = [
-    { src: 'src/assets/scrollingicons/css3.svg', title: 'CSS' },
-    { src: 'src/assets/scrollingicons/docker.svg', title: 'Docker' },
-    { src: 'src/assets/scrollingicons/git.svg', title: 'Git' },
-    { src: 'src/assets/scrollingicons/html5.svg', title: 'HTML' },
-    { src: 'src/assets/scrollingicons/javascript.svg', title: 'JavaScript' },
-    { src: 'src/assets/scrollingicons/vue.svg', title: 'Vue.js' },
-    { src: 'src/assets/scrollingicons/nodejs.svg', title: 'Node.js' },
-    { src: 'src/assets/scrollingicons/postgresql.svg', title: 'PostgreSQL' },
-    { src: 'src/assets/scrollingicons/python.svg', title: 'Python' },
-    { src: 'src/assets/scrollingicons/react.svg', title: 'React' },
-    { src: 'src/assets/scrollingicons/springboot.svg', title: 'Spring Boot' },
-    { src: 'src/assets/scrollingicons/typescript.svg', title: 'TypeScript' },
-    { src: 'src/assets/scrollingicons/vue.svg', title: 'Vue.js' },
+    { src: css3, title: 'CSS' },
+    { src: docker, title: 'Docker' },
+    { src: git, title: 'Git' },
+    { src: html5, title: 'HTML' },
+    { src: javascript, title: 'JavaScript' },
+    { src: vue, title: 'Vue.js' },
+    { src: nodejs, title: 'Node.js' },
+    { src: postgresql, title: 'PostgreSQL' },
+    { src: python, title: 'Python' },
+    { src: react, title: 'React' },
+    { src: springboot, title: 'Spring Boot' },
+    { src: typescript, title: 'TypeScript' },
 ]
 
 const icons = computed(() => props.icons || defaultIcons)
