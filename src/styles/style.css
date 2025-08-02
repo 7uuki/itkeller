@@ -240,13 +240,6 @@ h1 {
   transition: all 0.3s ease;
 }
 
-.btn:hover {
-  background-color: var(--button-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(var(--accent-primary-rgb), 0.2);
-  filter: brightness(1.05);
-}
-
 /* Enhanced hover for buttons with labels */
 .btn[title]:hover,
 .btn[aria-label]:hover {

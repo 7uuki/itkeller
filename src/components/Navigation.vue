@@ -30,12 +30,6 @@
           <NavbarButton target-section="academic" @navigate="handleNavigation">{{ t.nav.academic }}</NavbarButton>
         </li>
         <li class="nav-item">
-          <NavbarButton target-section="services" @navigate="handleNavigation">{{ t.nav.services }}</NavbarButton>
-        </li>
-        <li class="nav-item">
-          <NavbarButton target-section="portfolio" @navigate="handleNavigation">{{ t.nav.portfolio }}</NavbarButton>
-        </li>
-        <li class="nav-item">
           <NavbarButton target-section="contact" @navigate="handleNavigation">{{ t.nav.contact }}</NavbarButton>
         </li>
       </ul>

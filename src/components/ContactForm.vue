@@ -44,29 +44,27 @@
   <!-- Success Animation Overlay -->
   <div v-if="showSuccessAnimation" class="success-overlay" @click="closeSuccessAnimation">
     <div class="success-modal">
-      <Vue3Lottie 
-        v-if="emailSuccessAnimation"
-        :animation-data="emailSuccessAnimation"
+      <LottieAnimation 
+        :animation-path="'https://lottie.host/c2fb13b4-1140-4d1a-9528-a5e40f2ca2d3/FoiIzdx292.lottie'"
         :height="200"
         :width="200"
         :loop="false"
+        :should-play="showSuccessAnimation"
+        :preload="true"
         @complete="onAnimationComplete"
       />
-      <div v-else class="loading-placeholder">
-        <div class="spinner"></div>
-      </div>
       <h3 class="success-title">{{ t.contact.form.success }}</h3>
-      <p class="success-message">Thank you for your message! We'll get back to you soon.</p>
-      <button class="close-btn" @click="closeSuccessAnimation">Close</button>
+      <p class="success-message">{{ t.contact.form.successMessage }}</p>
+      <button class="close-btn" @click="closeSuccessAnimation">{{ t.contact.form.close }}</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useScrollReveal } from '../composables/useScrollReveal'
 import { useLanguage } from '../composables/useLanguage'
-import { Vue3Lottie } from 'vue3-lottie'
+import LottieAnimation from './LottieAnimation.vue'
 
 const { t } = useLanguage()
 
@@ -78,24 +76,6 @@ const form = ref({
 
 const showSuccessAnimation = ref(false)
 const isSubmitting = ref(false)
-const emailSuccessAnimation = ref(null)
-
-// Load the Lottie animation
-onMounted(async () => {
-  try {
-    console.log('Loading Lottie animation...')
-    const response = await fetch('/Emailsuccessfullysent.lottie')
-    console.log('Response status:', response.status)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    const animationData = await response.json()
-    console.log('Animation data loaded:', animationData)
-    emailSuccessAnimation.value = animationData
-  } catch (error) {
-    console.error('Failed to load Lottie animation:', error)
-  }
-})
 
 // Scroll reveal animations
 const formReveal = useScrollReveal({
@@ -126,7 +106,6 @@ const handleSubmit = async () => {
   }
   
   isSubmitting.value = false
-  console.log('Showing success animation...')
   showSuccessAnimation.value = true
 }
 
@@ -135,9 +114,10 @@ const closeSuccessAnimation = () => {
 }
 
 const onAnimationComplete = () => {
-  // Animation completed, you can add additional logic here if needed
-  console.log('Animation completed')
+  // Animation completed - could auto-close after a delay if desired
+  // setTimeout(() => closeSuccessAnimation(), 2000)
 }
+
 </script>
 
 <style scoped>
@@ -386,29 +366,6 @@ const onAnimationComplete = () => {
 .close-btn:hover {
   background: var(--button-hover);
   transform: translateY(-2px);
-}
-
-.loading-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  width: 200px;
-  margin: 0 auto;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid var(--border-color);
-  border-top: 4px solid var(--accent-primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 /* Mobile responsiveness */

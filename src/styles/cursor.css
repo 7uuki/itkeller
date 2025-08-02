@@ -53,6 +53,7 @@
 .no-text-cursor select,
 .no-text-cursor .academic-item,
 .no-text-cursor .skill-item,
+.no-text-cursor .skill-highlight-item,
 .no-text-cursor .stat-box {
   pointer-events: auto !important;
 }

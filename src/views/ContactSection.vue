@@ -33,6 +33,18 @@
         />
       </div>
     </div>
+
+    <!-- Preload success animation (hidden) -->
+    <div class="hidden-preload">
+      <LottieAnimation 
+        :animation-path="'https://lottie.host/c2fb13b4-1140-4d1a-9528-a5e40f2ca2d3/FoiIzdx292.lottie'"
+        :height="1"
+        :width="1"
+        :loop="false"
+        :should-play="false"
+        :preload="true"
+      />
+    </div>
   </section>
 </template>
 
@@ -41,6 +53,7 @@ import { useScrollReveal } from '../composables/useScrollReveal'
 import { useLanguage } from '../composables/useLanguage'
 import { useTerminal } from '../composables/useTerminal'
 import TerminalWindow from '../components/TerminalWindow.vue'
+import LottieAnimation from '../components/LottieAnimation.vue'
 
 const { t } = useLanguage()
 
@@ -166,6 +179,16 @@ const maximizeTerminal = () => {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Hidden preload container */
+.hidden-preload {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* Mobile responsiveness */

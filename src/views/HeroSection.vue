@@ -325,7 +325,6 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
 .btn-secondary {
   background-color: transparent;
   color: var(--text-primary);
-  border: 0px solid var(--button-bg);
   padding: 0;
 }
 
@@ -427,12 +426,15 @@ const { element: socialElement, style: socialStyle } = useScrollReveal({
 
   .hero-container {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1rem;
     text-align: center;
+    align-items: center;
+    flex: none;
   }
 
   .hero-title {
     font-size: 2.5rem;
+    margin-top: 0;
   }
 
   .hero-content {

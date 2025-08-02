@@ -32,7 +32,7 @@ export interface Translation {
     subtitle: string
     description: string
     skills: {
-      frontend: {
+      softwareEngineering: {
         name: string
         description: string
       }
@@ -40,23 +40,17 @@ export interface Translation {
         name: string
         description: string
       }
-      uiux: {
+      frontend: {
         name: string
         description: string
       }
-      database: {
+      mathematics: {
         name: string
         description: string
       }
-    }
-    stats: {
-      projects: string
-      experience: string
-      clients: string
-      success: string
     }
     skillsTitle: string
-    statsTitle: string
+    closing: string
   }
   
   // Academic Section
@@ -172,6 +166,8 @@ export interface Translation {
       send: string
       sending: string
       success: string
+      successMessage: string
+      close: string
       error: string
     }
     info: {
@@ -228,7 +224,7 @@ export const translations: Record<string, Translation> = {
       name: "IT Keller",
       title: "Full Stack Developer",
       subtitle: "Computer Science Student",
-      description: "Passionate about creating modern web applications and solving complex problems through code. Currently studying Computer Science with a focus on web technologies and software engineering.",
+      description: "Passionate about developing reliable software and tackling challenging problems with a strong foundation in computer science and mathematics.",
       getInTouch: "Get In Touch",
       viewPortfolio: "View Portfolio",
       emailTitle: "Write me an Email",
@@ -237,34 +233,28 @@ export const translations: Record<string, Translation> = {
     },
     about: {
       title: "About Me",
-      subtitle: "Get to know me better",
-      description: "I'm a passionate full-stack developer and computer science student with a love for creating innovative solutions. I enjoy working with modern technologies and frameworks to build responsive, user-friendly applications.",
+      subtitle: "Welcome, and thank you for visiting my website!",
+      description: "a passionate student pursuing a dual Bachelor's degree in Computer Science and Mathematics at FH Aachen. Through this dual study program, I combine academic learning with hands-on professional experience, bridging the gap between theory and practice.",
       skills: {
-        frontend: {
-          name: "Frontend Development",
-          description: "Vue.js, React, TypeScript"
+        softwareEngineering: {
+          name: "Software Engineering",
+          description: "Building scalable systems and solving complex problems"
         },
         backend: {
-          name: "Backend Development", 
-          description: "Node.js, Python, APIs"
+          name: "Backend Services & API Development", 
+          description: "Creating robust server-side solutions"
         },
-        uiux: {
-          name: "UI/UX Design",
-          description: "Figma, Adobe XD"
+        frontend: {
+          name: "Frontend UI Development & Design",
+          description: "Crafting intuitive user interfaces"
         },
-        database: {
-          name: "Database",
-          description: "PostgreSQL, MongoDB"
+        mathematics: {
+          name: "Applied Mathematics",
+          description: "Linear Algebra, Probability, Statistics, Calculus, Numerical Methods"
         }
       },
-      stats: {
-        projects: "Projects Completed",
-        experience: "Years Experience", 
-        clients: "Happy Clients",
-        success: "Success Rate"
-      },
-      skillsTitle: "Technical Skills",
-      statsTitle: "Experience Stats"
+      skillsTitle: "Core Interests & Skills",
+      closing: "I'm a curious problem-solver with a strong mathematical foundation and a \"can-learn-anything\" mindset. Whether it's building scalable systems or diving into complex algorithms, I enjoy challenges that help me grow."
     },
     academic: {
       title: "Academic Background",
@@ -375,7 +365,7 @@ export const translations: Record<string, Translation> = {
     },
     contact: {
       title: "Get In Touch",
-      subtitle: "Let's work together",
+      subtitle: "I'm always open to new opportunities, collaborations, or just a good conversation — don’t hesitate to reach out!",
       form: {
         name: "Name",
         namePlaceholder: "Your Name",
@@ -388,6 +378,8 @@ export const translations: Record<string, Translation> = {
         send: "Send Message",
         sending: "Sending...",
         success: "Message sent successfully!",
+        successMessage: "Thank you for your message! I'll get back to you soon.",
+        close: "Close",
         error: "Failed to send message. Please try again."
       },
       info: {
@@ -434,7 +426,7 @@ export const translations: Record<string, Translation> = {
       name: "IT Keller",
       title: "Full Stack Entwickler",
       subtitle: "Informatik Student",
-      description: "Leidenschaftlich für die Entwicklung moderner Webanwendungen und das Lösen komplexer Probleme durch Code. Studiere derzeit Informatik mit Fokus auf Webtechnologien und Software Engineering.",
+      description: "Leidenschaft für zuverlässige Softwareentwicklung und komplexe Problemstellungen – mit fundiertem Hintergrund in Informatik und Mathematik.",
       getInTouch: "Kontakt aufnehmen",
       viewPortfolio: "Portfolio ansehen",
       emailTitle: "Schreib mir eine E-Mail",
@@ -443,34 +435,28 @@ export const translations: Record<string, Translation> = {
     },
     about: {
       title: "Über mich",
-      subtitle: "Lerne mich besser kennen",
-      description: "Ich bin ein leidenschaftlicher Full-Stack-Entwickler und Informatikstudent mit einer Vorliebe für innovative Lösungen. Ich arbeite gerne mit modernen Technologien und Frameworks, um responsive, benutzerfreundliche Anwendungen zu erstellen.",
+      subtitle: "Willkommen und vielen Dank für den Besuch meiner Website!",
+      description: "ein leidenschaftlicher Student, der derzeit einen dualen Bachelor-Abschluss in Informatik und Mathematik an der FH Aachen verfolgt. Durch dieses duale Studienprogramm kombiniere ich akademisches Lernen mit praktischer Berufserfahrung und schlage die Brücke zwischen Theorie und Praxis.",
       skills: {
-        frontend: {
-          name: "Frontend Entwicklung",
-          description: "Vue.js, React, TypeScript"
+        softwareEngineering: {
+          name: "Software Engineering",
+          description: "Aufbau skalierbarer Systeme und Lösung komplexer Probleme"
         },
         backend: {
-          name: "Backend Entwicklung",
-          description: "Node.js, Python, APIs"
+          name: "Backend Services & API Entwicklung",
+          description: "Erstellung robuster serverseitiger Lösungen"
         },
-        uiux: {
-          name: "UI/UX Design",
-          description: "Figma, Adobe XD"
+        frontend: {
+          name: "Frontend UI Entwicklung & Design",
+          description: "Gestaltung intuitiver Benutzeroberflächen"
         },
-        database: {
-          name: "Datenbank",
-          description: "PostgreSQL, MongoDB"
+        mathematics: {
+          name: "Angewandte Mathematik",
+          description: "Lineare Algebra, Wahrscheinlichkeit, Statistik, Analysis, Numerische Methoden"
         }
       },
-      stats: {
-        projects: "Abgeschlossene Projekte",
-        experience: "Jahre Erfahrung",
-        clients: "Zufriedene Kunden", 
-        success: "Erfolgsrate"
-      },
-      skillsTitle: "Technische Fähigkeiten",
-      statsTitle: "Erfahrungsstatistiken"
+      skillsTitle: "Kerninteressen & Fähigkeiten",
+      closing: "Ich bin ein neugieriger Problemlöser mit einem starken mathematischen Fundament und einer \"Kann-alles-lernen\"-Mentalität. Ob es darum geht, skalierbare Systeme zu entwickeln oder in komplexe Algorithmen einzutauchen, ich mag Herausforderungen, die mir helfen zu wachsen."
     },
     academic: {
       title: "Akademischer Hintergrund",
@@ -581,7 +567,7 @@ export const translations: Record<string, Translation> = {
     },
     contact: {
       title: "Kontakt aufnehmen",
-      subtitle: "Lassen Sie uns zusammenarbeiten",
+      subtitle: "Ich bin jederzeit offen für neue Möglichkeiten, spannende Kooperationen oder einfach ein gutes Gespräch – zögern Sie nicht, mich zu kontaktieren!",
       form: {
         name: "Name",
         namePlaceholder: "Ihr Name",
@@ -594,6 +580,8 @@ export const translations: Record<string, Translation> = {
         send: "Nachricht senden",
         sending: "Wird gesendet...",
         success: "Nachricht erfolgreich gesendet!",
+        successMessage: "Vielen Dank für Ihre Nachricht! Ich werde mich bald bei Ihnen melden.",
+        close: "Schließen",
         error: "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut."
       },
       info: {
